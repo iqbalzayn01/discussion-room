@@ -1,4 +1,4 @@
-const BASE_URL = "https://forum-api.dicoding.dev/v1";
+const BASE_URL = "BASE_URL";
 
 function getToken() {
   return localStorage.getItem("token");
@@ -18,7 +18,7 @@ async function fetchWithToken(url, options = {}) {
   });
 }
 
-async function login({ email, password }) {
+async function signin({ email, password }) {
   const response = await fetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: {
@@ -37,7 +37,7 @@ async function login({ email, password }) {
   return { error: false, data: responseJson.data };
 }
 
-async function register({ name, email, password }) {
+async function signup({ name, email, password }) {
   const response = await fetch(`${BASE_URL}/register`, {
     method: "POST",
     headers: {
@@ -163,8 +163,8 @@ async function deleteNote(id) {
 export {
   getToken,
   putToken,
-  login,
-  register,
+  signin,
+  signup,
   getUserLogged,
   createThread,
   getActiveNotes,
