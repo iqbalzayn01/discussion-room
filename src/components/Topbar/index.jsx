@@ -1,12 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
-import { Navbar } from "../Navbar";
+import { NavbarDashboard } from "../Navbar";
 import CButton from "../CButton";
 
-export const Header = () => {
-  const getToken = useSelector((state) => state.auth.token);
+export default function Topbar() {
   const navigate = useNavigate();
+
   return (
     <header className="container-base p-5">
       <div className="flex items-center justify-between">
@@ -42,42 +41,21 @@ export const Header = () => {
             Discussion <br /> Room
           </p>
         </Link>
-        <Navbar className="flex items-center gap-10" />
         <div className="flex items-center justify-end gap-5">
+          <NavbarDashboard className="flex items-center gap-10" />
           <CButton className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-3 py-2 rounded-lg">
             🌑 Dark Mode
           </CButton>
-          {getToken ? (
-            <CButton
-              action={() => {
-                navigate("/dashboard");
-              }}
-              className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-4 py-3 rounded-lg"
-            >
-              Dashboard
-            </CButton>
-          ) : (
-            <>
-              <CButton
-                action={() => {
-                  navigate("/signin");
-                }}
-                className="flex items-center justify-center bg-white px-4 py-3 rounded-lg"
-              >
-                Sign In
-              </CButton>
-              <CButton
-                action={() => {
-                  navigate("/signup");
-                }}
-                className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-4 py-3 rounded-lg"
-              >
-                Sign Up
-              </CButton>
-            </>
-          )}
+          <CButton
+            action={() => {
+              navigate("/dashboard");
+            }}
+            className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-4 py-3 rounded-lg"
+          >
+            User
+          </CButton>
         </div>
       </div>
     </header>
   );
-};
+}

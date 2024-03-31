@@ -1,14 +1,10 @@
-const BASE_URL = "BASE_URL";
+import { config } from "../config";
 
-function getToken() {
-  return localStorage.getItem("token");
-}
-
-function putToken(Token) {
-  return localStorage.setItem("token", Token);
-}
+const BASE_URL = config.base_url;
 
 async function fetchWithToken(url, options = {}) {
+  const getToken = localStorage.getItem("token");
+
   return fetch(url, {
     ...options,
     headers: {
@@ -18,7 +14,7 @@ async function fetchWithToken(url, options = {}) {
   });
 }
 
-async function signin({ email, password }) {
+async function login({ email, password }) {
   const response = await fetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: {
@@ -37,7 +33,7 @@ async function signin({ email, password }) {
   return { error: false, data: responseJson.data };
 }
 
-async function signup({ name, email, password }) {
+async function register({ name, email, password }) {
   const response = await fetch(`${BASE_URL}/register`, {
     method: "POST",
     headers: {
@@ -50,10 +46,10 @@ async function signup({ name, email, password }) {
 
   if (responseJson.status !== "success") {
     alert(responseJson.message);
-    return { error: true };
+    return { error: true, data: null };
   }
 
-  return { error: false };
+  return { error: false, data: responseJson.data };
 }
 
 async function getUserLogged() {
@@ -161,10 +157,8 @@ async function deleteNote(id) {
 }
 
 export {
-  getToken,
-  putToken,
-  signin,
-  signup,
+  login,
+  register,
   getUserLogged,
   createThread,
   getActiveNotes,

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 import { Link } from "react-router-dom";
 
-export default function Navbar({ className }) {
+export const Navbar = ({ className }) => {
   return (
     <nav>
       <ul className={className}>
@@ -29,8 +29,31 @@ export default function Navbar({ className }) {
       </ul>
     </nav>
   );
-}
+};
 
 Navbar.propTypes = {
+  className: PropTypes.string,
+};
+
+export const NavbarDashboard = ({ className }) => {
+  return (
+    <nav>
+      <ul className={className}>
+        <li>
+          <Link to="/dashboard" className="">
+            Threads
+          </Link>
+        </li>
+        <li>
+          <Link to="/Leaderboards" className="">
+            Leaderboards
+          </Link>
+        </li>
+      </ul>
+    </nav>
+  );
+};
+
+NavbarDashboard.propTypes = {
   className: PropTypes.string,
 };
