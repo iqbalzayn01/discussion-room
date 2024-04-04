@@ -50,7 +50,7 @@ export default function SignUp() {
     }
   };
 
-  if (getToken) return <Navigate to="/dashboard" replace={true} />;
+  if (getToken) return <Navigate to="/forums" replace={true} />;
 
   return (
     <section className="">

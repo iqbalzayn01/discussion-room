@@ -1,9 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import { NavbarDashboard } from "../Navbar";
+import { NavbarForums } from "../Navbar";
 import CButton from "../CButton";
 
 export default function Topbar() {
+  const getToken = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
 
   return (
@@ -42,18 +44,39 @@ export default function Topbar() {
           </p>
         </Link>
         <div className="flex items-center justify-end gap-5">
-          <NavbarDashboard className="flex items-center gap-10" />
+          <NavbarForums className="flex items-center gap-10" />
           <CButton className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-3 py-2 rounded-lg">
             🌑 Dark Mode
           </CButton>
-          <CButton
-            action={() => {
-              navigate("/dashboard");
-            }}
-            className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-4 py-3 rounded-lg"
-          >
-            User
-          </CButton>
+          {getToken ? (
+            <CButton
+              action={() => {
+                navigate("/forums");
+              }}
+              className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-4 py-3 rounded-lg"
+            >
+              User
+            </CButton>
+          ) : (
+            <>
+              <CButton
+                action={() => {
+                  navigate("/signin");
+                }}
+                className="flex items-center justify-center bg-white px-4 py-3 rounded-lg"
+              >
+                Sign In
+              </CButton>
+              <CButton
+                action={() => {
+                  navigate("/signup");
+                }}
+                className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-4 py-3 rounded-lg"
+              >
+                Sign Up
+              </CButton>
+            </>
+          )}
         </div>
       </div>
     </header>

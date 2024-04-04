@@ -50,11 +50,11 @@ export const Header = () => {
           {getToken ? (
             <CButton
               action={() => {
-                navigate("/dashboard");
+                navigate("/forums");
               }}
               className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-4 py-3 rounded-lg"
             >
-              Dashboard
+              User
             </CButton>
           ) : (
             <>

@@ -1,9 +1,18 @@
+import { useNavigate } from "react-router-dom";
+
 import CButton from "../../components/CButton";
 
 export default function GridColOne() {
+  const navigate = useNavigate();
+
   return (
     <div className="col-span-1 flex flex-col gap-5">
-      <CButton className="w-full flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-5 py-3 rounded-lg">
+      <CButton
+        action={() => {
+          navigate("/newthreads");
+        }}
+        className="w-full flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-5 py-3 rounded-lg"
+      >
         Create New Discussion
       </CButton>
       <form className="flex flex-col gap-5 bg-white p-5 rounded-lg">

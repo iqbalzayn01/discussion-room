@@ -7,7 +7,8 @@ import {
 import Home from "../pages/home";
 import SignUp from "../pages/signup";
 import SignIn from "../pages/signin";
-import Dashboard from "../pages/dashboard";
+import Forums from "../pages/forums";
+import NewThreads from "../pages/newThreads";
 import RequireAuth from "./requireAuth";
 
 export const router = createBrowserRouter(
@@ -16,9 +17,10 @@ export const router = createBrowserRouter(
       <Route path="/" element={<Home />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signin" element={<SignIn />} />
+      <Route path="/forums" element={<Forums />} />
 
       <Route element={<RequireAuth />}>
-        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/newthreads" element={<NewThreads />} />
       </Route>
     </>
   )

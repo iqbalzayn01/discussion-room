@@ -30,14 +30,14 @@ export default function SignIn() {
       const token = res.data.token;
       dispatch(setToken(token));
       setIsLoading(false);
-      navigate("/dashboard");
+      navigate("/forums");
     } catch (error) {
       console.error("Error login:", error);
       setIsLoading(false);
     }
   };
 
-  if (getToken) return <Navigate to="/dashboard" replace={true} />;
+  if (getToken) return <Navigate to="/forums" replace={true} />;
 
   return (
     <section className="">

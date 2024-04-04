@@ -9,7 +9,7 @@ async function fetchWithToken(url, options = {}) {
     ...options,
     headers: {
       ...options.headers,
-      Authorization: `Bearer ${getToken()}`,
+      Authorization: `Bearer ${getToken}`,
     },
   });
 }
@@ -63,7 +63,7 @@ async function getUserLogged() {
   return { error: false, data: responseJson.data };
 }
 
-async function createThread({ title, body, category }) {
+async function createNewThreads({ title, body, category }) {
   const response = await fetchWithToken(`${BASE_URL}/threads`, {
     method: "POST",
     headers: {
@@ -81,8 +81,8 @@ async function createThread({ title, body, category }) {
   return { error: false, data: responseJson.data };
 }
 
-async function getActiveNotes() {
-  const response = await fetchWithToken(`${BASE_URL}/notes`);
+async function getAllThreads() {
+  const response = await fetchWithToken(`${BASE_URL}/threads`);
   const responseJson = await response.json();
 
   if (responseJson.status !== "success") {
@@ -142,29 +142,14 @@ async function unarchiveNote(id) {
   return { error: false, data: responseJson.data };
 }
 
-async function deleteNote(id) {
-  const response = await fetchWithToken(`${BASE_URL}/notes/${id}`, {
-    method: "DELETE",
-  });
-
-  const responseJson = await response.json();
-
-  if (responseJson.status !== "success") {
-    return { error: true, data: null };
-  }
-
-  return { error: false, data: responseJson.data };
-}
-
 export {
   login,
   register,
   getUserLogged,
-  createThread,
-  getActiveNotes,
+  createNewThreads,
+  getAllThreads,
   getArchivedNotes,
   getNote,
   archiveNote,
   unarchiveNote,
-  deleteNote,
 };

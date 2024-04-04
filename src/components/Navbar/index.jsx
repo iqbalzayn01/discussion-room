@@ -35,12 +35,12 @@ Navbar.propTypes = {
   className: PropTypes.string,
 };
 
-export const NavbarDashboard = ({ className }) => {
+export const NavbarForums = ({ className }) => {
   return (
     <nav>
       <ul className={className}>
         <li>
-          <Link to="/dashboard" className="">
+          <Link to="/forums" className="">
             Threads
           </Link>
         </li>
@@ -54,6 +54,6 @@ export const NavbarDashboard = ({ className }) => {
   );
 };
 
-NavbarDashboard.propTypes = {
+NavbarForums.propTypes = {
   className: PropTypes.string,
 };
