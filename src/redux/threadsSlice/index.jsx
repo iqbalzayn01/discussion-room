@@ -19,7 +19,7 @@ export const threadsSlice = createSlice({
       state.threads.push(action.payload);
     },
     addComment: (state, action) => {
-      state.detailThread.comments.push(action.payload);
+      state.detailThread.comments.unshift(action.payload);
     },
   },
 });

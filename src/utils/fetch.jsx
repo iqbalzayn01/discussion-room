@@ -165,6 +165,23 @@ async function neutralThreadVote(id) {
   return { error: false, data: responseJson.data };
 }
 
+async function createComment(id, content) {
+  const response = await fetchWithToken(`${BASE_URL}/threads/${id}/comments`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ content }),
+  });
+  const responseJson = await response.json();
+
+  if (responseJson.status !== "success") {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
 export {
   login,
   register,
@@ -176,4 +193,5 @@ export {
   upVoteThread,
   downVoteThread,
   neutralThreadVote,
+  createComment,
 };

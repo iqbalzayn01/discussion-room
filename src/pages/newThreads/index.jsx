@@ -12,7 +12,6 @@ export default function NewThreads() {
     body: "",
     category: "",
   });
-  // const [remainingCharacters, setRemainingCharacters] = useState(1000);
   const [isLoading, setIsLoading] = useState(false);
   const newThreadsBodyRef = useRef(null);
   const navigate = useNavigate();
@@ -21,12 +20,6 @@ export default function NewThreads() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormDataState({ ...formDataState, [name]: value });
-
-    // if (name === "title") {
-    //   setRemainingCharacters(500 - value.length);
-    // } else if (name === "category") {
-    //   setRemainingCharacters(25 - value.length);
-    // }
   };
 
   const handleBodyChange = () => {
@@ -97,7 +90,7 @@ export default function NewThreads() {
         />
         <div
           ref={newThreadsBodyRef}
-          className="bg-transparent h-auto font-semibold text-xl text-black border border-black outline-none p-5 rounded-lg"
+          className="bg-transparent min-h-[100px] font-semibold text-xl text-black border border-black outline-none p-5 rounded-lg"
           contentEditable
           onInput={handleBodyChange}
         />

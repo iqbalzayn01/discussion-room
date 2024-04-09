@@ -36,19 +36,21 @@ export default function GridColTwo({
                   {getUserNameById(users, thread.ownerId)}
                 </p>
               </div>
-              <p className="w-fit text-[#787878] border border-[#787878] px-2 py-1 rounded-lg">
-                #{thread.category}
-              </p>
               <Link to={`/detail-thread/${thread.id}`}>
                 <h2 className="text-xl hover:text-gray-500 font-medium">
                   {thread.title}
                 </h2>
               </Link>
               <div className="text-base">{parser(thread.body)}</div>
-              <VoteThreads
-                thread={thread}
-                handleVoteUpdate={handleVoteUpdate}
-              />
+              <p className="w-fit text-[#787878] border border-[#787878] px-2 py-1 rounded-lg mt-5">
+                #{thread.category}
+              </p>
+              <div className="flex items-center gap-3">
+                <VoteThreads
+                  thread={thread}
+                  handleVoteUpdate={handleVoteUpdate}
+                />
+              </div>
             </div>
           ))
         )}

@@ -7,6 +7,9 @@ import { getThread } from "../../utils/fetch";
 import { setDetailThread } from "../../redux/threadsSlice";
 import VoteDetailThread from "../../components/CVoteBtn/VoteDetailThread";
 import Topbar from "../../components/Topbar";
+import CommentInput from "./commentInput";
+import Comments from "./comments";
+import formatCreatedAt from "../../utils/formatCreatedAt";
 
 export default function DetailThread() {
   const { id } = useParams();
@@ -28,33 +31,11 @@ export default function DetailThread() {
     fetchData();
   }, [id, dispatch]);
 
-  const formatCreatedAt = (createdAt) => {
-    const postDate = new Date(createdAt);
-    const now = new Date();
-
-    const diffTime = now - postDate;
-    const diffSeconds = Math.floor(diffTime / 1000);
-    const diffMinutes = Math.floor(diffSeconds / 60);
-    const diffHours = Math.floor(diffMinutes / 60);
-    const diffDays = Math.floor(diffHours / 24);
-
-    if (diffDays > 1) {
-      return `${diffDays} days ago`;
-    }
-    if (diffHours > 1) {
-      return `${diffHours} hours ago`;
-    }
-    if (diffMinutes > 1) {
-      return `${diffMinutes} minutes ago`;
-    }
-    return `${diffSeconds} seconds ago`;
-  };
-
   return (
     <>
       <Topbar />
-      <section className="container-base px-5">
-        <div className="flex flex-col gap-5">
+      <section className="container-base px-5 py-10">
+        <div className="flex flex-col gap-5 mb-10">
           <p className="w-fit text-[#787878] border border-[#787878] px-2 py-1 rounded-lg">
             #{detailThread.category}
           </p>
@@ -88,6 +69,9 @@ export default function DetailThread() {
             {`< Back`}
           </Link>
         </div>
+
+        <CommentInput detailThread={detailThread} className="mb-10" />
+        <Comments comments={detailThread.comments} className="mb-10" />
       </section>
     </>
   );
