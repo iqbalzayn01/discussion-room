@@ -9,6 +9,7 @@ import SignUp from "../pages/signup";
 import SignIn from "../pages/signin";
 import Forums from "../pages/forums";
 import NewThreads from "../pages/newThreads";
+import DetailThread from "../pages/detailThread";
 import RequireAuth from "./requireAuth";
 
 export const router = createBrowserRouter(
@@ -21,6 +22,7 @@ export const router = createBrowserRouter(
 
       <Route element={<RequireAuth />}>
         <Route path="/newthreads" element={<NewThreads />} />
+        <Route path="/detail-thread/:id" element={<DetailThread />} />
       </Route>
     </>
   )

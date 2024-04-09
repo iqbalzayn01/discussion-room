@@ -12,7 +12,7 @@ export default function NewThreads() {
     body: "",
     category: "",
   });
-  const [remainingCharacters, setRemainingCharacters] = useState(50);
+  // const [remainingCharacters, setRemainingCharacters] = useState(1000);
   const [isLoading, setIsLoading] = useState(false);
   const newThreadsBodyRef = useRef(null);
   const navigate = useNavigate();
@@ -22,11 +22,11 @@ export default function NewThreads() {
     const { name, value } = e.target;
     setFormDataState({ ...formDataState, [name]: value });
 
-    if (name === "title") {
-      setRemainingCharacters(500 - value.length);
-    } else if (name === "category") {
-      setRemainingCharacters(25 - value.length);
-    }
+    // if (name === "title") {
+    //   setRemainingCharacters(500 - value.length);
+    // } else if (name === "category") {
+    //   setRemainingCharacters(25 - value.length);
+    // }
   };
 
   const handleBodyChange = () => {
@@ -67,9 +67,12 @@ export default function NewThreads() {
         onSubmit={handleSubmit}
         className="flex h-screen flex-col justify-center gap-5"
       >
-        <p className="text-black">
+        {/* <p className="text-black">
           Remaining characters: {remainingCharacters}
-        </p>
+        </p> */}
+        <h3 className="text-3xl font-medium text-black dark:text-white text-center mb-10">
+          New Threads
+        </h3>
         <input
           id="title"
           type="text"

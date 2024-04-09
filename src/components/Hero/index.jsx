@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import CButton from "../CButton";
 
 export default function Hero() {
+  const navigate = useNavigate();
+
   return (
     <section className="container-base px-5">
       <div className="flex w-full h-screen flex-col place-content-center items-center text-center gap-5">
@@ -11,7 +14,12 @@ export default function Hero() {
           Join a Community of Technology Enthusiasts, Learn, and Discuss the
           Latest Trends
         </p>
-        <CButton className="flex items-center justify-center gap-5 bg-black dark:bg-white text-white dark:text-black px-5 py-[14px] rounded-lg">
+        <CButton
+          action={() => {
+            navigate("/signup");
+          }}
+          className="flex items-center justify-center gap-5 bg-black dark:bg-white text-white dark:text-black px-5 py-[14px] rounded-lg"
+        >
           <p>Join The Community</p>
           <svg
             width="10"

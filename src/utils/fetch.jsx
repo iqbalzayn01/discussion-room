@@ -63,6 +63,17 @@ async function getUserLogged() {
   return { error: false, data: responseJson.data };
 }
 
+async function getAllUsers() {
+  const response = await fetchWithToken(`${BASE_URL}/users`);
+  const responseJson = await response.json();
+
+  if (responseJson.status !== "success") {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
 async function createNewThreads({ title, body, category }) {
   const response = await fetchWithToken(`${BASE_URL}/threads`, {
     method: "POST",
@@ -92,8 +103,8 @@ async function getAllThreads() {
   return { error: false, data: responseJson.data };
 }
 
-async function getArchivedNotes() {
-  const response = await fetchWithToken(`${BASE_URL}/notes/archived`);
+async function getThread(id) {
+  const response = await fetchWithToken(`${BASE_URL}/threads/${id}`);
   const responseJson = await response.json();
 
   if (responseJson.status !== "success") {
@@ -103,22 +114,13 @@ async function getArchivedNotes() {
   return { error: false, data: responseJson.data };
 }
 
-async function getNote(id) {
-  const response = await fetchWithToken(`${BASE_URL}/notes/${id}`);
-  const responseJson = await response.json();
-
-  if (responseJson.status !== "success") {
-    return { error: true, data: null };
-  }
-
-  return { error: false, data: responseJson.data };
-}
-
-async function archiveNote(id) {
-  const response = await fetchWithToken(`${BASE_URL}/notes/${id}/archive`, {
+async function upVoteThread(id) {
+  const response = await fetchWithToken(`${BASE_URL}/threads/${id}/up-vote`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
-
   const responseJson = await response.json();
 
   if (responseJson.status !== "success") {
@@ -128,11 +130,32 @@ async function archiveNote(id) {
   return { error: false, data: responseJson.data };
 }
 
-async function unarchiveNote(id) {
-  const response = await fetchWithToken(`${BASE_URL}/notes/${id}/unarchive`, {
+async function downVoteThread(id) {
+  const response = await fetchWithToken(`${BASE_URL}/threads/${id}/down-vote`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
+  const responseJson = await response.json();
 
+  if (responseJson.status !== "success") {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function neutralThreadVote(id) {
+  const response = await fetchWithToken(
+    `${BASE_URL}/threads/${id}/neutral-vote`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   const responseJson = await response.json();
 
   if (responseJson.status !== "success") {
@@ -146,10 +169,11 @@ export {
   login,
   register,
   getUserLogged,
+  getAllUsers,
   createNewThreads,
   getAllThreads,
-  getArchivedNotes,
-  getNote,
-  archiveNote,
-  unarchiveNote,
+  getThread,
+  upVoteThread,
+  downVoteThread,
+  neutralThreadVote,
 };

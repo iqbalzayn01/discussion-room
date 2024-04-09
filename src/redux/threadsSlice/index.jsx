@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   threads: [],
+  detailThread: {},
 };
 
 export const threadsSlice = createSlice({
@@ -11,12 +12,19 @@ export const threadsSlice = createSlice({
     setThreads: (state, action) => {
       state.threads = action.payload;
     },
+    setDetailThread: (state, action) => {
+      state.detailThread = action.payload;
+    },
     createThreads: (state, action) => {
       state.threads.push(action.payload);
+    },
+    addComment: (state, action) => {
+      state.detailThread.comments.push(action.payload);
     },
   },
 });
 
-export const { setThreads, createThreads } = threadsSlice.actions;
+export const { setThreads, setDetailThread, createThreads, addComment } =
+  threadsSlice.actions;
 
 export default threadsSlice.reducer;

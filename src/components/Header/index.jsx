@@ -1,12 +1,20 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
+import { clearToken } from "../../redux/authSlice";
 import { Navbar } from "../Navbar";
 import CButton from "../CButton";
 
 export const Header = () => {
   const getToken = useSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    dispatch(clearToken());
+    navigate("/");
+  };
+
   return (
     <header className="container-base p-5">
       <div className="flex items-center justify-between">
@@ -49,12 +57,10 @@ export const Header = () => {
           </CButton>
           {getToken ? (
             <CButton
-              action={() => {
-                navigate("/forums");
-              }}
-              className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-4 py-3 rounded-lg"
+              action={handleSignOut}
+              className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-lg"
             >
-              User
+              {`Sign Out >`}
             </CButton>
           ) : (
             <>
