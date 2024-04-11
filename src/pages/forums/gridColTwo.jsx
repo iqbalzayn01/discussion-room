@@ -16,7 +16,7 @@ export default function GridColTwo({
   updateSearch,
 }) {
   return (
-    <div className="col-span-2">
+    <div className="col-span-3">
       <div className="flex flex-col gap-5">
         <CSearch placeholder="Search . . ." updateSearch={updateSearch} />
         <div className="bg-white flex flex-col gap-10 p-5 rounded-lg">
@@ -46,7 +46,7 @@ export default function GridColTwo({
                   </h2>
                 </Link>
                 <div className="text-base">{parser(thread.body)}</div>
-                <p className="w-fit text-[#787878] border border-[#787878] px-2 py-1 rounded-lg mt-5">
+                <p className="w-fit text-[#787878] border border-[#787878] px-2 py-1 rounded-lg mt-2">
                   #{thread.category}
                 </p>
                 <div className="flex items-center gap-3">

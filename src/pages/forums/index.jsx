@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { getAllUsers, getAllThreads } from "../../utils/fetch";
+import { getAllUsers, getAllThreads, getLeaderboards } from "../../utils/fetch";
 import { setUsers } from "../../redux/authSlice";
 import { setThreads } from "../../redux/threadsSlice";
+import { setLeaderboards } from "../../redux/leaderboardSlice";
 import Topbar from "../../components/Topbar";
 import GridColOne from "./gridColOne";
 import GridColTwo from "./gridColTwo";
-import GridColThree from "./gridColThree";
 
 export default function Forums() {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +15,7 @@ export default function Forums() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const threads = useSelector((state) => state.threads.threads);
   const users = useSelector((state) => state.auth.users);
+  const leaderboards = useSelector((state) => state.leaderboards.leaderboards);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,11 +24,14 @@ export default function Forums() {
       try {
         const res = await getAllThreads();
         const resUsers = await getAllUsers();
+        const resLeaderboards = await getLeaderboards();
         const dataThreads = res.data.threads;
         const dataAllUsers = resUsers.data.users;
+        const dataLeaderboards = resLeaderboards.data.leaderboards;
 
         dispatch(setThreads(dataThreads));
         dispatch(setUsers(dataAllUsers));
+        dispatch(setLeaderboards(dataLeaderboards));
         setIsLoading(false);
       } catch (error) {
         console.error("Get All Threads Error:", error);
@@ -126,6 +130,8 @@ export default function Forums() {
             handleResetSort={handleResetSort}
             handleCategoryFilter={handleCategoryFilter}
             selectedCategory={selectedCategory}
+            leaderboards={leaderboards}
+            isLoading={isLoading}
           />
           <GridColTwo
             users={users}
@@ -136,7 +142,6 @@ export default function Forums() {
             handleVoteUpdate={handleVoteUpdate}
             updateSearch={updateSearch}
           />
-          <GridColThree users={users} isLoading={isLoading} />
         </div>
       </main>
     </>

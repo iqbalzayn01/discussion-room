@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
+import Learderboards from "./leaderboards";
 import CButton from "../../components/CButton";
 import CSortBy from "../../components/CSortBy";
 
@@ -10,6 +11,8 @@ export default function GridColOne({
   handleResetSort,
   handleCategoryFilter,
   selectedCategory,
+  leaderboards,
+  isLoading,
 }) {
   const navigate = useNavigate();
 
@@ -22,7 +25,7 @@ export default function GridColOne({
   };
 
   return (
-    <div className="col-span-1 flex flex-col gap-5">
+    <div className="col-span-3 md:col-span-1 flex flex-col gap-5">
       <CButton
         action={() => {
           navigate("/newthreads");
@@ -50,6 +53,7 @@ export default function GridColOne({
           ))}
         </ul>
       </div>
+      <Learderboards leaderboards={leaderboards} isLoading={isLoading} />
     </div>
   );
 }
@@ -65,4 +69,6 @@ GridColOne.propTypes = {
   handleResetSort: PropTypes.func.isRequired,
   handleCategoryFilter: PropTypes.func.isRequired,
   selectedCategory: PropTypes.string,
+  leaderboards: PropTypes.array,
+  isLoading: PropTypes.bool,
 };

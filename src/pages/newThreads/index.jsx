@@ -55,14 +55,11 @@ export default function NewThreads() {
   };
 
   return (
-    <section className="container-base max-w-[900px] p-5">
+    <section className="container-base max-w-[900px] min-h-[100vh] p-5">
       <form
         onSubmit={handleSubmit}
         className="flex h-screen flex-col justify-center gap-5"
       >
-        {/* <p className="text-black">
-          Remaining characters: {remainingCharacters}
-        </p> */}
         <h3 className="text-3xl font-medium text-black dark:text-white text-center mb-10">
           New Threads
         </h3>
@@ -90,7 +87,7 @@ export default function NewThreads() {
         />
         <div
           ref={newThreadsBodyRef}
-          className="bg-transparent min-h-[100px] font-semibold text-xl text-black border border-black outline-none p-5 rounded-lg"
+          className="isolate font-semibold text-xl text-black border border-black outline-none p-5 rounded-lg"
           contentEditable
           onInput={handleBodyChange}
         />

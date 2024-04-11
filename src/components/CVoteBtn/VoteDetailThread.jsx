@@ -38,54 +38,63 @@ export default function VoteDetailThread() {
     fetchData();
   }, [id, dispatch]);
 
-  const isUserUpvoted = (thread, userId) => {
-    return thread.upVotesBy && thread.upVotesBy.includes(userId);
+  const isUserUpvoted = () => {
+    return detailThread.upVotesBy && detailThread.upVotesBy.includes(user.id);
   };
 
-  const isUserDownvoted = (thread, userId) => {
-    return thread.downVotesBy && thread.downVotesBy.includes(userId);
+  const isUserDownvoted = () => {
+    return (
+      detailThread.downVotesBy && detailThread.downVotesBy.includes(user.id)
+    );
   };
 
-  const updateVotes = (thread, userId, voteType) => {
-    let updatedThread = { ...thread };
+  const updateVotes = async (voteType) => {
+    try {
+      let updatedThread = { ...detailThread };
 
-    if (voteType === "up") {
-      updatedThread.upVotesBy = isUserUpvoted(thread, userId)
-        ? thread.upVotesBy.filter((id) => id !== userId)
-        : [...thread.upVotesBy, userId];
+      if (voteType === "up") {
+        updatedThread.upVotesBy = isUserUpvoted()
+          ? detailThread.upVotesBy.filter((id) => id !== user.id)
+          : [...detailThread.upVotesBy, user.id];
 
-      if (isUserDownvoted(thread, userId)) {
-        updatedThread.downVotesBy = thread.downVotesBy.filter(
-          (id) => id !== userId
-        );
+        if (isUserDownvoted()) {
+          updatedThread.downVotesBy = detailThread.downVotesBy.filter(
+            (id) => id !== user.id
+          );
+        }
+
+        await upVoteThread(detailThread.id, 1);
+      } else if (voteType === "down") {
+        updatedThread.downVotesBy = isUserDownvoted()
+          ? detailThread.downVotesBy.filter((id) => id !== user.id)
+          : [...detailThread.downVotesBy, user.id];
+
+        if (isUserUpvoted()) {
+          updatedThread.upVotesBy = detailThread.upVotesBy.filter(
+            (id) => id !== user.id
+          );
+        }
+
+        await downVoteThread(detailThread.id, -1);
       }
-    } else if (voteType === "down") {
-      updatedThread.downVotesBy = isUserDownvoted(thread, userId)
-        ? thread.downVotesBy.filter((id) => id !== userId)
-        : [...thread.downVotesBy, userId];
 
-      if (isUserUpvoted(thread, userId)) {
-        updatedThread.upVotesBy = thread.upVotesBy.filter(
-          (id) => id !== userId
-        );
-      }
+      dispatch(setDetailThread(updatedThread));
+    } catch (error) {
+      console.error("Update Votes Error:", error);
     }
-
-    return updatedThread;
   };
 
   const handleUpvote = async (e) => {
     e.preventDefault();
 
     try {
-      if (isUserUpvoted(detailThread, user.id)) {
+      if (isUserUpvoted()) {
         await neutralThreadVote(detailThread.id);
       } else {
         await upVoteThread(detailThread.id, 1);
       }
 
-      const updatedThread = updateVotes(detailThread, user.id, "up");
-      dispatch(setDetailThread(updatedThread));
+      updateVotes("up");
     } catch (error) {
       console.error("Upvote Error:", error);
     }
@@ -95,25 +104,33 @@ export default function VoteDetailThread() {
     e.preventDefault();
 
     try {
-      if (isUserDownvoted(detailThread, user.id)) {
+      if (isUserDownvoted()) {
         await neutralThreadVote(detailThread.id);
       } else {
         await downVoteThread(detailThread.id, -1);
       }
 
-      const updatedThread = updateVotes(detailThread, user.id, "down");
-      dispatch(setDetailThread(updatedThread));
+      updateVotes("down");
     } catch (error) {
       console.error("Downvote Error:", error);
     }
   };
+
   return (
     <>
-      <button type="button" onClick={handleUpvote}>
+      <button
+        type="button"
+        onClick={handleUpvote}
+        className={isUserUpvoted() ? "text-yellow-600" : ""}
+      >
         <p>👍</p>
         <p>{detailThread.upVotesBy?.length}</p>
       </button>
-      <button type="button" onClick={handleDownvote}>
+      <button
+        type="button"
+        onClick={handleDownvote}
+        className={isUserDownvoted() ? "text-yellow-600" : ""}
+      >
         <p>👎</p>
         <p>{detailThread.downVotesBy?.length}</p>
       </button>

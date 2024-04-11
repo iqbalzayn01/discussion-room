@@ -182,6 +182,74 @@ async function createComment(id, content) {
   return { error: false, data: responseJson.data };
 }
 
+async function upVoteComment(id, commentId) {
+  const response = await fetchWithToken(
+    `${BASE_URL}/threads/${id}/comments/${commentId}/up-vote`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const responseJson = await response.json();
+
+  if (responseJson.status !== "success") {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function downVoteComment(id, commentId) {
+  const response = await fetchWithToken(
+    `${BASE_URL}/threads/${id}/comments/${commentId}/down-vote`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const responseJson = await response.json();
+
+  if (responseJson.status !== "success") {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function neutralCommentVote(id, commentId) {
+  const response = await fetchWithToken(
+    `${BASE_URL}/threads/${id}/comments/${commentId}/neutral-vote`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const responseJson = await response.json();
+
+  if (responseJson.status !== "success") {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function getLeaderboards() {
+  const response = await fetchWithToken(`${BASE_URL}/leaderboards`);
+  const responseJson = await response.json();
+
+  if (responseJson.status !== "success") {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
 export {
   login,
   register,
@@ -194,4 +262,8 @@ export {
   downVoteThread,
   neutralThreadVote,
   createComment,
+  upVoteComment,
+  downVoteComment,
+  neutralCommentVote,
+  getLeaderboards,
 };

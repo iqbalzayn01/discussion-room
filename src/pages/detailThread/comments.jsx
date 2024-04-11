@@ -1,15 +1,10 @@
-// import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import parser from "html-react-parser";
+
+import VoteComments from "../../components/CVoteBtn/VoteComments";
 import formatCreatedAt from "../../utils/formatCreatedAt";
 
 export default function Comments({ className, comments }) {
-  //    const [commentsList, setCommentsList] = useState(comments);
-
-  //    useEffect(() => {
-  //      setCommentsList(comments);
-  //    }, [comments]);
-
   return (
     <ul className={`flex flex-col gap-10 ${className}`}>
       <li className="font-medium text-xl">
@@ -18,7 +13,7 @@ export default function Comments({ className, comments }) {
       {comments && comments.length > 0 ? (
         comments.map((comment) => (
           <li key={comment.id} className="flex items-start justify-between">
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <img
                   src={comment.owner.avatar}
@@ -29,14 +24,7 @@ export default function Comments({ className, comments }) {
               </div>
               <div>{parser(String(comment.content))}</div>
               <div className="flex items-center">
-                <button type="button">
-                  <p>👍</p>
-                  <p>{comment.upVotesBy?.length}</p>
-                </button>
-                <button type="button">
-                  <p>👎</p>
-                  <p>{comment.downVotesBy?.length}</p>
-                </button>
+                <VoteComments comment={comment} />
               </div>
             </div>
             <p>{formatCreatedAt(comment.createdAt)}</p>

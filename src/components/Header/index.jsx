@@ -58,7 +58,7 @@ export const Header = () => {
           {getToken ? (
             <CButton
               action={handleSignOut}
-              className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-lg"
+              className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-3 py-2 rounded-lg"
             >
               {`Sign Out >`}
             </CButton>
@@ -68,7 +68,7 @@ export const Header = () => {
                 action={() => {
                   navigate("/signin");
                 }}
-                className="flex items-center justify-center bg-white px-4 py-3 rounded-lg"
+                className="flex items-center justify-center bg-white px-3 py-2 rounded-lg"
               >
                 Sign In
               </CButton>
@@ -76,7 +76,7 @@ export const Header = () => {
                 action={() => {
                   navigate("/signup");
                 }}
-                className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-4 py-3 rounded-lg"
+                className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-3 py-2 rounded-lg"
               >
                 Sign Up
               </CButton>

@@ -110,11 +110,19 @@ export default function VoteThreads({ thread, handleVoteUpdate }) {
 
   return (
     <>
-      <button type="button" onClick={handleUpvote}>
+      <button
+        type="button"
+        onClick={handleUpvote}
+        className={isUserUpvoted(user?.id) ? "text-yellow-600" : ""}
+      >
         <p>👍</p>
         <p>{thread.upVotesBy?.length}</p>
       </button>
-      <button type="button" onClick={handleDownvote}>
+      <button
+        type="button"
+        onClick={handleDownvote}
+        className={isUserDownvoted(user?.id) ? "text-yellow-600" : ""}
+      >
         <p>👎</p>
         <p>{thread.downVotesBy?.length}</p>
       </button>
