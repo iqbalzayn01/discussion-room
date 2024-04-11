@@ -24,7 +24,7 @@ export default function FormSignUp({
         name="name"
         type="text"
         value={valueName}
-        className="w-full text-input"
+        className="w-full text-input mt-3"
         classNameLabel="text-csecondary dark:text-white"
         placeholder="Name"
         onChange={onChange}
@@ -35,7 +35,7 @@ export default function FormSignUp({
         name="email"
         type="email"
         value={valueEmail}
-        className="w-full text-input"
+        className="w-full text-input mt-3"
         classNameLabel="text-csecondary dark:text-white"
         placeholder="Email address"
         onChange={onChange}

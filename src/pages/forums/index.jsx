@@ -11,6 +11,8 @@ import GridColThree from "./gridColThree";
 
 export default function Forums() {
   const [isLoading, setIsLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const threads = useSelector((state) => state.threads.threads);
   const users = useSelector((state) => state.auth.users);
   const dispatch = useDispatch();
@@ -49,18 +51,90 @@ export default function Forums() {
     return user ? user.name : "Unknown";
   };
 
+  const handleVoteUpdate = (updatedThread) => {
+    const updatedThreads = threads.map((thread) =>
+      thread.id === updatedThread.id ? updatedThread : thread
+    );
+    return updatedThreads;
+  };
+
+  const updateSearch = (term) => {
+    setSearchTerm(term);
+  };
+
+  const filteredThreads = threads.filter((thread) =>
+    thread.title.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+  );
+
+  const handleSortBy = (sortBy) => {
+    if (sortBy === "newest") {
+      const sortedThreads = [...threads].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      dispatch(setThreads(sortedThreads));
+    } else if (sortBy === "oldest") {
+      const sortedThreads = [...threads].sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+      );
+      dispatch(setThreads(sortedThreads));
+    }
+  };
+
+  const handleResetSort = () => {
+    const sortedThreads = [...threads].sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    dispatch(setThreads(sortedThreads));
+  };
+
+  const handleCategoryFilter = async (category) => {
+    let filteredThreads = [];
+
+    try {
+      setIsLoading(true);
+      let dataThreads = [];
+
+      if (category !== "") {
+        filteredThreads = threads.filter(
+          (thread) => thread.category === category
+        );
+        setSelectedCategory(category);
+      } else {
+        const res = await getAllThreads();
+        dataThreads = res.data.threads;
+        setSelectedCategory("");
+      }
+
+      dispatch(
+        setThreads(filteredThreads.length > 0 ? filteredThreads : dataThreads)
+      );
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error filtering threads:", error);
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <Topbar />
       <main className="container-base px-5">
         <div className="grid md:grid-cols-4 gap-5">
-          <GridColOne />
+          <GridColOne
+            threads={threads}
+            handleSortBy={handleSortBy}
+            handleResetSort={handleResetSort}
+            handleCategoryFilter={handleCategoryFilter}
+            selectedCategory={selectedCategory}
+          />
           <GridColTwo
             users={users}
-            threads={threads}
+            threads={filteredThreads}
             isLoading={isLoading}
             getAvatarById={getAvatarById}
             getUserNameById={getUserNameById}
+            handleVoteUpdate={handleVoteUpdate}
+            updateSearch={updateSearch}
           />
           <GridColThree users={users} isLoading={isLoading} />
         </div>

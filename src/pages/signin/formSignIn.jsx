@@ -22,7 +22,7 @@ export default function FormSignIn({
         name="email"
         type="email"
         value={valueEmail}
-        className="w-full text-input"
+        className="w-full text-input mt-3"
         classNameLabel="text-csecondary dark:text-white"
         placeholder="Email address"
         onChange={onChange}
@@ -33,7 +33,7 @@ export default function FormSignIn({
         name="password"
         type="password"
         value={valuePassword}
-        className="w-full text-input"
+        className="w-full text-input mt-3"
         classNameLabel="text-csecondary dark:text-white"
         placeholder="Password"
         onChange={onChange}

@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { clearToken } from "../../redux/authSlice";
-import { NavbarForums } from "../Navbar";
 import CButton from "../CButton";
 
 export default function Topbar() {
@@ -51,7 +50,6 @@ export default function Topbar() {
           </p>
         </Link>
         <div className="flex items-center justify-end gap-5">
-          <NavbarForums className="flex items-center gap-10" />
           <CButton className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-3 py-2 rounded-lg">
             🌑 Dark Mode
           </CButton>

@@ -33,7 +33,7 @@ export default function GridColThree({ users, isLoading }) {
             })
           )}
         </ul>
-        <Link to="/#see-all" className="self-end hover:text-gray-500">
+        <Link to="/#Leaderboards" className="self-end hover:text-gray-500">
           See all
         </Link>
       </div>

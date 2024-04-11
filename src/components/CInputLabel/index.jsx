@@ -13,7 +13,7 @@ export default function CInputLabel({
   accept,
 }) {
   return (
-    <div className="w-full md:w-1/2 flex flex-col gap-3">
+    <div className="w-full">
       <label htmlFor={htmlFor} className={classNameLabel}>
         {label}
       </label>

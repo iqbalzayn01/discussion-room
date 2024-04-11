@@ -7,12 +7,12 @@ export const Navbar = ({ className }) => {
     <nav>
       <ul className={className}>
         <li>
-          <Link to="/about" className="">
+          <Link to="/#about" className="">
             About
           </Link>
         </li>
         <li>
-          <Link to="/blog" className="">
+          <Link to="/#blog" className="">
             Blog
           </Link>
         </li>
@@ -22,7 +22,7 @@ export const Navbar = ({ className }) => {
           </Link>
         </li>
         <li>
-          <Link to="/contact-us" className="">
+          <Link to="/#contact-us" className="">
             Contact Us
           </Link>
         </li>
@@ -32,28 +32,5 @@ export const Navbar = ({ className }) => {
 };
 
 Navbar.propTypes = {
-  className: PropTypes.string,
-};
-
-export const NavbarForums = ({ className }) => {
-  return (
-    <nav>
-      <ul className={className}>
-        <li>
-          <Link to="/forums" className="">
-            Threads
-          </Link>
-        </li>
-        <li>
-          <Link to="/Leaderboards" className="">
-            Leaderboards
-          </Link>
-        </li>
-      </ul>
-    </nav>
-  );
-};
-
-NavbarForums.propTypes = {
   className: PropTypes.string,
 };

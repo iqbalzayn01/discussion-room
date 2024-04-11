@@ -1,9 +1,25 @@
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import CButton from "../../components/CButton";
+import CSortBy from "../../components/CSortBy";
 
-export default function GridColOne() {
+export default function GridColOne({
+  threads,
+  handleSortBy,
+  handleResetSort,
+  handleCategoryFilter,
+  selectedCategory,
+}) {
   const navigate = useNavigate();
+
+  const handleCategoryClick = (category) => {
+    if (selectedCategory === category) {
+      handleCategoryFilter("");
+    } else {
+      handleCategoryFilter(category);
+    }
+  };
 
   return (
     <div className="col-span-1 flex flex-col gap-5">
@@ -15,28 +31,38 @@ export default function GridColOne() {
       >
         Create New Discussion
       </CButton>
-      <form className="flex flex-col gap-5 bg-white p-5 rounded-lg">
-        <p className="font-medium text-lg">Sort by</p>
-        <label className="flex items-center gap-2 text-black">
-          <input type="radio" name="sortBy" value="newest" />
-          Newest Discussions
-        </label>
-        <label className="flex items-center gap-2 text-black">
-          <input type="radio" name="sortBy" value="oldest" />
-          Oldest Discussions
-        </label>
-      </form>
+      <CSortBy handleSortBy={handleSortBy} handleResetSort={handleResetSort} />
       <div className="flex flex-col gap-5 bg-black p-5 rounded-lg">
         <p className="font-medium text-white text-lg">Popular keywords</p>
-        <div className="flex flex-wrap gap-[10px]">
-          <span className="bg-white px-2 py-[6px] rounded-lg">#react</span>
-          <span className="bg-white px-2 py-[6px] rounded-lg">#redux</span>
-          <span className="bg-white px-2 py-[6px] rounded-lg">#submission</span>
-          <span className="bg-white px-2 py-[6px] rounded-lg">#testing</span>
-          <span className="bg-white px-2 py-[6px] rounded-lg">#javascript</span>
-          <span className="bg-white px-2 py-[6px] rounded-lg">#javascript</span>
-        </div>
+        <ul className="flex flex-wrap gap-[10px]">
+          {threads.map((thread) => (
+            <li key={thread.id}>
+              <CButton
+                type="button"
+                className={`bg-white px-2 py-[6px] rounded-lg ${
+                  selectedCategory === thread.category ? "bg-gray-400" : ""
+                }`}
+                action={() => handleCategoryClick(thread.category)}
+              >
+                {`#${thread.category}`}
+              </CButton>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
 }
+
+GridColOne.propTypes = {
+  threads: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      category: PropTypes.string.isRequired,
+    })
+  ),
+  handleSortBy: PropTypes.func.isRequired,
+  handleResetSort: PropTypes.func.isRequired,
+  handleCategoryFilter: PropTypes.func.isRequired,
+  selectedCategory: PropTypes.string,
+};
