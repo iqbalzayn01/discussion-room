@@ -5,8 +5,8 @@ import parser from "html-react-parser";
 
 import { getThread } from "../../utils/fetch";
 import { setDetailThread } from "../../redux/threadsSlice";
+import { Header } from "../../components/Header";
 import VoteDetailThread from "../../components/CVoteBtn/VoteDetailThread";
-import Topbar from "../../components/Topbar";
 import CommentInput from "./commentInput";
 import Comments from "./comments";
 import formatCreatedAt from "../../utils/formatCreatedAt";
@@ -33,7 +33,7 @@ export default function DetailThread() {
 
   return (
     <>
-      <Topbar />
+      <Header />
       <section className="container-base px-5 py-10">
         <div className="flex flex-col gap-5 mb-10">
           <p className="w-fit text-[#787878] border border-[#787878] px-2 py-1 rounded-lg">

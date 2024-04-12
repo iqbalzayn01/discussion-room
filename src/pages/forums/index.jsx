@@ -5,7 +5,7 @@ import { getAllUsers, getAllThreads, getLeaderboards } from "../../utils/fetch";
 import { setUsers } from "../../redux/authSlice";
 import { setThreads } from "../../redux/threadsSlice";
 import { setLeaderboards } from "../../redux/leaderboardSlice";
-import Topbar from "../../components/Topbar";
+import { Header } from "../../components/Header";
 import GridColOne from "./gridColOne";
 import GridColTwo from "./gridColTwo";
 
@@ -121,7 +121,7 @@ export default function Forums() {
 
   return (
     <>
-      <Topbar />
+      <Header />
       <main className="container-base px-5">
         <div className="grid md:grid-cols-4 gap-5">
           <GridColOne

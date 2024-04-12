@@ -1,14 +1,38 @@
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { clearToken } from "../../redux/authSlice";
+import { setOneUser, clearToken } from "../../redux/authSlice";
+import { getUserLogged } from "../../utils/fetch";
 import { Navbar } from "../Navbar";
 import CButton from "../CButton";
 
 export const Header = () => {
   const getToken = useSelector((state) => state.auth.token);
+  const getUser = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (getToken) {
+          const resUser = await getUserLogged();
+          const userLogged = resUser.data.user;
+
+          dispatch(setOneUser(userLogged));
+        }
+      } catch (error) {
+        console.error("Get One User Error:", error);
+      }
+    };
+
+    fetchData();
+  }, [getToken, dispatch]);
+
+  const shouldDisplayNavbar = () => {
+    return location.pathname === "/";
+  };
 
   const handleSignOut = () => {
     dispatch(clearToken());
@@ -50,18 +74,22 @@ export const Header = () => {
             Discussion <br /> Room
           </p>
         </Link>
-        <Navbar className="flex items-center gap-10" />
+        {shouldDisplayNavbar() && (
+          <Navbar className="flex items-center gap-10" />
+        )}
         <div className="flex items-center justify-end gap-5">
-          <CButton className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-3 py-2 rounded-lg">
-            🌑 Dark Mode
-          </CButton>
           {getToken ? (
-            <CButton
-              action={handleSignOut}
-              className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-3 py-2 rounded-lg"
-            >
-              {`Sign Out >`}
-            </CButton>
+            <>
+              <p className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-3 py-2 rounded-lg">
+                {`Hi, ${getUser.name}`}
+              </p>
+              <CButton
+                action={handleSignOut}
+                className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-3 py-2 rounded-lg"
+              >
+                {`Sign Out >`}
+              </CButton>
+            </>
           ) : (
             <>
               <CButton

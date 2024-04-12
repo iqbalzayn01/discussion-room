@@ -3,8 +3,7 @@ import Hero from "../../components/Hero";
 
 export default function Home() {
   return (
-    // dark
-    <main className="">
+    <main>
       <Header />
       <Hero />
     </main>
