@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import PropTypes from "prop-types";
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import {
   getUserLogged,
@@ -9,9 +9,9 @@ import {
   upVoteComment,
   downVoteComment,
   neutralCommentVote,
-} from "../../utils/fetch";
-import { setOneUser } from "../../redux/authSlice";
-import { setDetailThread } from "../../redux/threadsSlice";
+} from '../../utils/fetch';
+import { setOneUser } from '../../redux/auth/actions';
+import { setDetailThread } from '../../redux/threads/actions';
 
 export default function VoteComments({ comment }) {
   const { id } = useParams();
@@ -32,26 +32,24 @@ export default function VoteComments({ comment }) {
         dispatch(setDetailThread(dataThread));
         dispatch(setOneUser(dataUser));
       } catch (error) {
-        console.error("Get One Thread Error:", error);
+        console.error('Get One Thread Error:', error);
       }
     };
 
     fetchData();
   }, [id, dispatch]);
 
-  const isUserUpvoted = () => {
-    return comment.upVotesBy && comment.upVotesBy.includes(user.id);
-  };
+  const isUserUpvoted = () =>
+    comment.upVotesBy && comment.upVotesBy.includes(user.id);
 
-  const isUserDownvoted = () => {
-    return comment.downVotesBy && comment.downVotesBy.includes(user.id);
-  };
+  const isUserDownvoted = () =>
+    comment.downVotesBy && comment.downVotesBy.includes(user.id);
 
   const updateVotes = async (voteType) => {
     try {
-      let updatedComment = { ...comment };
+      const updatedComment = { ...comment };
 
-      if (voteType === "up") {
+      if (voteType === 'up') {
         updatedComment.upVotesBy = isUserUpvoted()
           ? comment.upVotesBy.filter((id) => id !== user.id)
           : [...comment.upVotesBy, user.id];
@@ -63,7 +61,7 @@ export default function VoteComments({ comment }) {
         }
 
         await upVoteComment(id, comment.id);
-      } else if (voteType === "down") {
+      } else if (voteType === 'down') {
         updatedComment.downVotesBy = isUserDownvoted()
           ? comment.downVotesBy.filter((id) => id !== user.id)
           : [...comment.downVotesBy, user.id];
@@ -75,7 +73,7 @@ export default function VoteComments({ comment }) {
         }
 
         await downVoteComment(id, comment.id);
-      } else if (voteType === "neutral") {
+      } else if (voteType === 'neutral') {
         updatedComment.upVotesBy = comment.upVotesBy.filter(
           (id) => id !== user.id
         );
@@ -95,7 +93,7 @@ export default function VoteComments({ comment }) {
         })
       );
     } catch (error) {
-      console.error("Update Votes Error:", error);
+      console.error('Update Votes Error:', error);
     }
   };
 
@@ -103,17 +101,17 @@ export default function VoteComments({ comment }) {
     <>
       <button
         type="button"
-        onClick={() => updateVotes("up")}
-        className={isUserUpvoted() ? "text-yellow-600" : ""}
+        onClick={() => updateVotes('up')}
+        className={isUserUpvoted() ? 'text-yellow-600' : ''}
       >
-        👍 {comment.upVotesBy?.length}
+        {`👍 ${comment.upVotesBy?.length}`}
       </button>
       <button
         type="button"
-        onClick={() => updateVotes("down")}
-        className={isUserDownvoted() ? "text-yellow-600" : ""}
+        onClick={() => updateVotes('down')}
+        className={isUserDownvoted() ? 'text-yellow-600' : ''}
       >
-        👎 {comment.downVotesBy?.length}
+        {`👎 ${comment.downVotesBy?.length}`}
       </button>
     </>
   );

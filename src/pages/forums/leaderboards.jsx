@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 export default function Learderboards({ leaderboards, isLoading }) {
   const limitedUsers = leaderboards.slice(0, 7);
@@ -23,7 +23,7 @@ export default function Learderboards({ leaderboards, isLoading }) {
               const dataLeaderboard = leaderboard.user;
               const avatarWithoutSpaces = dataLeaderboard.avatar.replace(
                 /\s/g,
-                ""
+                ''
               );
               return (
                 <li
@@ -35,10 +35,10 @@ export default function Learderboards({ leaderboards, isLoading }) {
                       className="w-[36px] h-[36px] rounded-full"
                       style={{
                         backgroundImage: `url(${avatarWithoutSpaces})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
                       }}
-                    ></span>
+                    />
                     <p className="text-sm">{dataLeaderboard.name}</p>
                   </div>
                   <p>{leaderboard.score}</p>
@@ -56,6 +56,11 @@ export default function Learderboards({ leaderboards, isLoading }) {
 }
 
 Learderboards.propTypes = {
-  leaderboards: PropTypes.array,
+  leaderboards: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      score: PropTypes.number,
+    })
+  ),
   isLoading: PropTypes.bool,
 };

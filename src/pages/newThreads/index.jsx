@@ -1,16 +1,17 @@
-import { useState, useRef } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useState, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate, Link } from 'react-router-dom';
+import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
-import { createNewThreads } from "../../utils/fetch";
-import { createThreads } from "../../redux/threadsSlice";
-import CButton from "../../components/CButton";
+import { createNewThreads } from '../../utils/fetch';
+import { createThreads } from '../../redux/threads/actions';
+import CButton from '../../components/CButton';
 
 export default function NewThreads() {
   const [formDataState, setFormDataState] = useState({
-    title: "",
-    body: "",
-    category: "",
+    title: '',
+    body: '',
+    category: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const newThreadsBodyRef = useRef(null);
@@ -29,28 +30,32 @@ export default function NewThreads() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    dispatch(showLoading());
     setIsLoading(true);
     try {
       const { title, body, category } = formDataState;
 
       const formData = new FormData();
-      formData.append("title", title);
-      formData.append("body", body);
-      formData.append("category", category);
+      formData.append('title', title);
+      formData.append('body', body);
+      formData.append('category', category);
 
       const res = await createNewThreads({
-        title: formData.get("title"),
-        body: formData.get("body"),
-        category: formData.get("category"),
+        title: formData.get('title'),
+        body: formData.get('body'),
+        category: formData.get('category'),
       });
       const dataThreads = res.data.thread;
 
       dispatch(createThreads(dataThreads));
       setIsLoading(false);
-      navigate("/forums");
+      dispatch(hideLoading());
+      navigate('/forums');
     } catch (error) {
-      console.error("FORM_NEW_THREADS_ERROR:", error);
+      console.error('FORM_NEW_THREADS_ERROR:', error);
       setIsLoading(false);
+      dispatch(hideLoading());
     }
   };
 
@@ -100,7 +105,7 @@ export default function NewThreads() {
           Create New Threads
         </CButton>
         <Link to="/forums" className="text-black text-center hover:underline">
-          {`< Back`}
+          {'< Back'}
         </Link>
       </form>
     </section>

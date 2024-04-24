@@ -1,13 +1,12 @@
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import parser from "html-react-parser";
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import parser from 'html-react-parser';
 
-import VoteThreads from "../../components/CVoteBtn/VoteThreads";
-import CSearch from "../../components/CSearch";
-import formatCreatedAt from "../../utils/formatCreatedAt";
+import VoteThreads from '../../components/CVoteBtn/VoteThreads';
+import CSearch from '../../components/CSearch';
+import formatCreatedAt from '../../utils/formatCreatedAt';
 
 export default function GridColTwo({
-  users,
   threads,
   isLoading,
   getAvatarById,
@@ -32,9 +31,7 @@ export default function GridColTwo({
                       alt="Avatar"
                       className="w-[36px] h-[36px] rounded-full object-cover"
                     />
-                    <p className="text-sm">
-                      {getUserNameById(users, thread.ownerId)}
-                    </p>
+                    <p className="text-sm">{getUserNameById(thread.ownerId)}</p>
                   </div>
                   <p className="text-[#787878]">
                     {formatCreatedAt(thread.createdAt)}
@@ -47,13 +44,14 @@ export default function GridColTwo({
                 </Link>
                 <div className="text-base">{parser(thread.body)}</div>
                 <p className="w-fit text-[#787878] border border-[#787878] px-2 py-1 rounded-lg mt-2">
-                  #{thread.category}
+                  {`#${thread.category}`}
                 </p>
                 <div className="flex items-center gap-3">
                   <VoteThreads
                     thread={thread}
                     handleVoteUpdate={handleVoteUpdate}
                   />
+                  <p>{`🗨️ ${thread.totalComments}`}</p>
                 </div>
               </div>
             ))
@@ -65,14 +63,6 @@ export default function GridColTwo({
 }
 
 GridColTwo.propTypes = {
-  users: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
-      avatar: PropTypes.string.isRequired,
-    })
-  ),
   threads: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -82,6 +72,7 @@ GridColTwo.propTypes = {
       ownerId: PropTypes.string.isRequired,
       upVotesBy: PropTypes.array,
       downVotesBy: PropTypes.array,
+      totalComments: PropTypes.number,
     })
   ),
   isLoading: PropTypes.bool,

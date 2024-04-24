@@ -1,15 +1,15 @@
-import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import parser from "html-react-parser";
+import { useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import parser from 'html-react-parser';
 
-import { getThread } from "../../utils/fetch";
-import { setDetailThread } from "../../redux/threadsSlice";
-import { Header } from "../../components/Header";
-import VoteDetailThread from "../../components/CVoteBtn/VoteDetailThread";
-import CommentInput from "./commentInput";
-import Comments from "./comments";
-import formatCreatedAt from "../../utils/formatCreatedAt";
+import { getThread } from '../../utils/fetch';
+import { setDetailThread } from '../../redux/threads/actions';
+import Header from '../../components/Header';
+import VoteDetailThread from '../../components/CVoteBtn/VoteDetailThread';
+import CommentInput from './commentInput';
+import Comments from './comments';
+import formatCreatedAt from '../../utils/formatCreatedAt';
 
 export default function DetailThread() {
   const { id } = useParams();
@@ -24,7 +24,7 @@ export default function DetailThread() {
 
         dispatch(setDetailThread(dataThread));
       } catch (error) {
-        console.error("Get One Thread Error:", error);
+        console.error('Get One Thread Error:', error);
       }
     };
 
@@ -37,11 +37,11 @@ export default function DetailThread() {
       <section className="container-base px-5 py-10">
         <div className="flex flex-col gap-5 mb-10">
           <p className="w-fit text-[#787878] border border-[#787878] px-2 py-1 rounded-lg">
-            #{detailThread.category}
+            {`#${detailThread.category}`}
           </p>
           <h2 className="text-4xl font-medium">{detailThread.title}</h2>
           <div className="text-base">
-            {detailThread.body ? parser(detailThread.body) : ""}
+            {detailThread.body ? parser(detailThread.body) : ''}
           </div>
           {detailThread.owner && (
             <div className="flex items-center">
@@ -66,7 +66,7 @@ export default function DetailThread() {
             to="/forums"
             className="text-black text-center hover:underline mt-5"
           >
-            {`< Back`}
+            {'< Back'}
           </Link>
         </div>
 

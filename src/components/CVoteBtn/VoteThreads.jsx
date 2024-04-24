@@ -1,16 +1,16 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import PropTypes from "prop-types";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import {
   getUserLogged,
   upVoteThread,
   downVoteThread,
   neutralThreadVote,
-} from "../../utils/fetch";
-import { setOneUser } from "../../redux/authSlice";
-import { setThreads } from "../../redux/threadsSlice";
+} from '../../utils/fetch';
+import { setOneUser } from '../../redux/auth/actions';
+import { setThreads } from '../../redux/threads/actions';
 
 export default function VoteThreads({ thread, handleVoteUpdate }) {
   const user = useSelector((state) => state.auth.user);
@@ -27,25 +27,23 @@ export default function VoteThreads({ thread, handleVoteUpdate }) {
 
         dispatch(setOneUser(dataUser));
       } catch (error) {
-        console.error("Get One User Error:", error);
+        console.error('Get One User Error:', error);
       }
     };
 
     fetchData();
   }, [authUser, dispatch]);
 
-  const isUserUpvoted = (userId) => {
-    return thread.upVotesBy && thread.upVotesBy.includes(userId);
-  };
+  const isUserUpvoted = (userId) =>
+    thread.upVotesBy && thread.upVotesBy.includes(userId);
 
-  const isUserDownvoted = (userId) => {
-    return thread.downVotesBy && thread.downVotesBy.includes(userId);
-  };
+  const isUserDownvoted = (userId) =>
+    thread.downVotesBy && thread.downVotesBy.includes(userId);
 
   const updateVotes = (userId, voteType) => {
-    let updatedThread = { ...thread };
+    const updatedThread = { ...thread };
 
-    if (voteType === "up") {
+    if (voteType === 'up') {
       updatedThread.upVotesBy = isUserUpvoted(userId)
         ? thread.upVotesBy.filter((id) => id !== userId)
         : [...thread.upVotesBy, userId];
@@ -55,7 +53,7 @@ export default function VoteThreads({ thread, handleVoteUpdate }) {
           (id) => id !== userId
         );
       }
-    } else if (voteType === "down") {
+    } else if (voteType === 'down') {
       updatedThread.downVotesBy = isUserDownvoted(userId)
         ? thread.downVotesBy.filter((id) => id !== userId)
         : [...thread.downVotesBy, userId];
@@ -74,18 +72,18 @@ export default function VoteThreads({ thread, handleVoteUpdate }) {
     e.preventDefault();
 
     try {
-      if (!authUser) return navigate("/signin");
+      if (!authUser) return navigate('/signin');
       if (isUserUpvoted(user?.id)) {
         await neutralThreadVote(thread.id);
       } else {
         await upVoteThread(thread.id, 1);
       }
 
-      const updatedThread = updateVotes(user?.id, "up");
+      const updatedThread = updateVotes(user?.id, 'up');
       const updatedThreads = handleVoteUpdate(updatedThread);
       dispatch(setThreads(updatedThreads));
     } catch (error) {
-      console.error("Upvote Error:", error);
+      console.error('Upvote Error:', error);
     }
   };
 
@@ -93,18 +91,18 @@ export default function VoteThreads({ thread, handleVoteUpdate }) {
     e.preventDefault();
 
     try {
-      if (!authUser) return navigate("/signin");
+      if (!authUser) return navigate('/signin');
       if (isUserDownvoted(user?.id)) {
         await neutralThreadVote(thread.id);
       } else {
         await downVoteThread(thread.id, -1);
       }
 
-      const updatedThread = updateVotes(user?.id, "down");
+      const updatedThread = updateVotes(user?.id, 'down');
       const updatedThreads = handleVoteUpdate(updatedThread);
       dispatch(setThreads(updatedThreads));
     } catch (error) {
-      console.error("Downvote Error:", error);
+      console.error('Downvote Error:', error);
     }
   };
 
@@ -113,18 +111,16 @@ export default function VoteThreads({ thread, handleVoteUpdate }) {
       <button
         type="button"
         onClick={handleUpvote}
-        className={isUserUpvoted(user?.id) ? "text-yellow-600" : ""}
+        className={isUserUpvoted(user?.id) ? 'text-yellow-600' : ''}
       >
-        <p>👍</p>
-        <p>{thread.upVotesBy?.length}</p>
+        <p>{`👍 ${thread.upVotesBy?.length}`}</p>
       </button>
       <button
         type="button"
         onClick={handleDownvote}
-        className={isUserDownvoted(user?.id) ? "text-yellow-600" : ""}
+        className={isUserDownvoted(user?.id) ? 'text-yellow-600' : ''}
       >
-        <p>👎</p>
-        <p>{thread.downVotesBy?.length}</p>
+        <p>{`👎 ${thread.downVotesBy?.length}`}</p>
       </button>
     </>
   );

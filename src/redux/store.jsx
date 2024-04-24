@@ -1,12 +1,11 @@
-import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./authSlice";
-import threadsReducer from "./threadsSlice";
-import leaderboardsReducer from "./leaderboardSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import { loadingBarMiddleware } from 'react-redux-loading-bar';
+import rootReducer from './reducers';
 
-export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-    threads: threadsReducer,
-    leaderboards: leaderboardsReducer,
-  },
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(loadingBarMiddleware()),
 });
+
+export default store;

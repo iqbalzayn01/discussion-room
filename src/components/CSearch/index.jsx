@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
-import CInputLabel from "../CInputLabel";
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import CInputLabel from '../CInputLabel';
 
 export default function CSearch({ placeholder, updateSearch }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleChange = (e) => {
     const newSearchTerm = e.target.value;
@@ -14,7 +14,7 @@ export default function CSearch({ placeholder, updateSearch }) {
     updateSearch(newSearchTerm);
 
     const searchParams = new URLSearchParams(location.search);
-    searchParams.set("keyword", newSearchTerm);
+    searchParams.set('keyword', newSearchTerm);
     navigate(`?${searchParams.toString()}`, { replace: true });
   };
 
@@ -38,5 +38,5 @@ CSearch.propTypes = {
 };
 
 CSearch.defaultProps = {
-  placeholder: "Search...",
+  placeholder: 'Search...',
 };

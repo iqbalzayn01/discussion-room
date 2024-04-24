@@ -1,14 +1,14 @@
-import PropTypes from "prop-types";
-import parser from "html-react-parser";
+import PropTypes from 'prop-types';
+import parser from 'html-react-parser';
 
-import VoteComments from "../../components/CVoteBtn/VoteComments";
-import formatCreatedAt from "../../utils/formatCreatedAt";
+import VoteComments from '../../components/CVoteBtn/VoteComments';
+import formatCreatedAt from '../../utils/formatCreatedAt';
 
 export default function Comments({ className, comments }) {
   return (
     <ul className={`flex flex-col gap-10 ${className}`}>
       <li className="font-medium text-xl">
-        {comments ? `${comments.length} Comments` : "0 Comments"}
+        {comments ? `${comments.length} Comments` : '0 Comments'}
       </li>
       {comments && comments.length > 0 ? (
         comments.map((comment) => (

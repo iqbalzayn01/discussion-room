@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import CButton from "../CButton";
+import { useNavigate } from 'react-router-dom';
+import CButton from '../CButton';
 
 export default function Hero() {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function Hero() {
         </p>
         <CButton
           action={() => {
-            navigate("/signup");
+            navigate('/signup');
           }}
           className="flex items-center justify-center gap-5 bg-black dark:bg-white text-white dark:text-black px-5 py-[14px] rounded-lg"
         >

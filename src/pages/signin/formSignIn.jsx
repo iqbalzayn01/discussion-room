@@ -1,8 +1,8 @@
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-import CButton from "../../components/CButton";
-import CInputLabel from "../../components/CInputLabel";
+import CButton from '../../components/CButton';
+import CInputLabel from '../../components/CInputLabel';
 
 export default function FormSignIn({
   isLoading,
@@ -53,7 +53,7 @@ export default function FormSignIn({
         </Link>
       </p>
       <Link to="/" className="hover:underline">
-        {`< Back`}
+        {'< Back'}
       </Link>
     </form>
   );

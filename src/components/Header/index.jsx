@@ -1,42 +1,37 @@
-import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { setOneUser, clearToken } from "../../redux/authSlice";
-import { getUserLogged } from "../../utils/fetch";
-import { Navbar } from "../Navbar";
-import CButton from "../CButton";
+import { fetchUser, clearToken } from '../../redux/auth/actions';
+import Navbar from '../Navbar';
+import CButton from '../CButton';
 
-export const Header = () => {
+export default function Header() {
   const getToken = useSelector((state) => state.auth.token);
   const getUser = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (getToken) {
-          const resUser = await getUserLogged();
-          const userLogged = resUser.data.user;
-
-          dispatch(setOneUser(userLogged));
+          dispatch(fetchUser());
         }
       } catch (error) {
-        console.error("Get One User Error:", error);
+        console.error('Get One User Error:', error);
       }
     };
 
     fetchData();
   }, [getToken, dispatch]);
 
-  const shouldDisplayNavbar = () => {
-    return location.pathname === "/";
-  };
+  const shouldDisplayNavbar = () => location.pathname === '/';
 
   const handleSignOut = () => {
     dispatch(clearToken());
-    navigate("/");
+    navigate('/');
   };
 
   return (
@@ -71,7 +66,9 @@ export const Header = () => {
             </defs>
           </svg>
           <p className="font-semibold text-black dark:text-white text-xl">
-            Discussion <br /> Room
+            Discussion
+            <br />
+            Room
           </p>
         </Link>
         {shouldDisplayNavbar() && (
@@ -87,14 +84,14 @@ export const Header = () => {
                 action={handleSignOut}
                 className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-3 py-2 rounded-lg"
               >
-                {`Sign Out >`}
+                {'Sign Out >'}
               </CButton>
             </>
           ) : (
             <>
               <CButton
                 action={() => {
-                  navigate("/signin");
+                  navigate('/signin');
                 }}
                 className="flex items-center justify-center bg-white px-3 py-2 rounded-lg"
               >
@@ -102,7 +99,7 @@ export const Header = () => {
               </CButton>
               <CButton
                 action={() => {
-                  navigate("/signup");
+                  navigate('/signup');
                 }}
                 className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-3 py-2 rounded-lg"
               >
@@ -114,4 +111,4 @@ export const Header = () => {
       </div>
     </header>
   );
-};
+}

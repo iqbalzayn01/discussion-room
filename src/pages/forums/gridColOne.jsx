@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-import Learderboards from "./leaderboards";
-import CButton from "../../components/CButton";
-import CSortBy from "../../components/CSortBy";
+import Learderboards from './leaderboards';
+import CButton from '../../components/CButton';
+import CSortBy from '../../components/CSortBy';
 
 export default function GridColOne({
   threads,
@@ -18,7 +18,7 @@ export default function GridColOne({
 
   const handleCategoryClick = (category) => {
     if (selectedCategory === category) {
-      handleCategoryFilter("");
+      handleCategoryFilter('');
     } else {
       handleCategoryFilter(category);
     }
@@ -28,7 +28,7 @@ export default function GridColOne({
     <div className="col-span-3 md:col-span-1 flex flex-col gap-5">
       <CButton
         action={() => {
-          navigate("/newthreads");
+          navigate('/newthreads');
         }}
         className="w-full flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-5 py-3 rounded-lg"
       >
@@ -43,7 +43,7 @@ export default function GridColOne({
               <CButton
                 type="button"
                 className={`bg-white px-2 py-[6px] rounded-lg ${
-                  selectedCategory === thread.category ? "bg-gray-400" : ""
+                  selectedCategory === thread.category ? 'bg-gray-400' : ''
                 }`}
                 action={() => handleCategoryClick(thread.category)}
               >
@@ -69,6 +69,11 @@ GridColOne.propTypes = {
   handleResetSort: PropTypes.func.isRequired,
   handleCategoryFilter: PropTypes.func.isRequired,
   selectedCategory: PropTypes.string,
-  leaderboards: PropTypes.array,
+  leaderboards: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      score: PropTypes.number,
+    })
+  ),
   isLoading: PropTypes.bool,
 };

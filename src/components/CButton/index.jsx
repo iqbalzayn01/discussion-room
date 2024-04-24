@@ -1,4 +1,5 @@
-import PropTypes from "prop-types";
+/* eslint-disable react/button-has-type */
+import PropTypes from 'prop-types';
 
 export default function CButton({
   action,
@@ -15,7 +16,7 @@ export default function CButton({
       className={className}
       disabled={disabled}
     >
-      {loading ? "Loading . . ." : children}
+      {loading ? 'Loading . . .' : children}
     </button>
   );
 }

@@ -1,8 +1,8 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-export const Navbar = ({ className }) => {
+export default function Navbar({ className }) {
   return (
     <nav>
       <ul className={className}>
@@ -21,15 +21,10 @@ export const Navbar = ({ className }) => {
             Forums
           </Link>
         </li>
-        <li>
-          <Link to="/#contact-us" className="">
-            Contact Us
-          </Link>
-        </li>
       </ul>
     </nav>
   );
-};
+}
 
 Navbar.propTypes = {
   className: PropTypes.string,

@@ -28,7 +28,9 @@ export default function Logo() {
           </linearGradient>
         </defs>
       </svg>
-      Discussion <br /> Room
+      Discussion
+      <br />
+      Room
     </h1>
   );
 }

@@ -1,11 +1,12 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
+import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
-import { addUser } from "../../redux/authSlice";
-import { register } from "../../utils/fetch";
-import FormSignUp from "./formSignUp";
-import Logo from "../../components/Logo";
+import { addUser } from '../../redux/auth/actions';
+import { register } from '../../utils/fetch';
+import FormSignUp from './formSignUp';
+import Logo from '../../components/Logo';
 
 export default function SignUp() {
   const getToken = useSelector((state) => state.auth.token);
@@ -14,10 +15,10 @@ export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
   const [passwordMatchError, setPasswordMatchError] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   });
 
   const handleChange = (e) => {
@@ -28,13 +29,14 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    dispatch(showLoading());
+    setIsLoading(true);
     if (formData.password !== formData.confirmPassword) {
       setPasswordMatchError(true);
       return;
     }
 
     try {
-      setIsLoading(true);
       const res = await register({
         name: formData.name,
         email: formData.email,
@@ -43,14 +45,16 @@ export default function SignUp() {
       const dataUser = res.data;
       dispatch(addUser(dataUser));
       setIsLoading(false);
-      navigate("/signin");
+      dispatch(hideLoading());
+      navigate('/signin');
     } catch (error) {
-      console.error("SIGNUP_ERROR:", error);
+      console.error('SIGNUP_ERROR:', error);
       setIsLoading(false);
+      dispatch(hideLoading());
     }
   };
 
-  if (getToken) return <Navigate to="/forums" replace={true} />;
+  if (getToken) return <Navigate to="/forums" replace />;
 
   return (
     <section className="">

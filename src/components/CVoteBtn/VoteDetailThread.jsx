@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 import {
   getUserLogged,
@@ -8,9 +8,9 @@ import {
   upVoteThread,
   downVoteThread,
   neutralThreadVote,
-} from "../../utils/fetch";
-import { setOneUser } from "../../redux/authSlice";
-import { setDetailThread } from "../../redux/threadsSlice";
+} from '../../utils/fetch';
+import { setOneUser } from '../../redux/auth/actions';
+import { setDetailThread } from '../../redux/threads/actions';
 
 export default function VoteDetailThread() {
   const { id } = useParams();
@@ -31,28 +31,24 @@ export default function VoteDetailThread() {
         dispatch(setDetailThread(dataThread));
         dispatch(setOneUser(dataUser));
       } catch (error) {
-        console.error("Get One Thread Error:", error);
+        console.error('Get One Thread Error:', error);
       }
     };
 
     fetchData();
   }, [id, dispatch]);
 
-  const isUserUpvoted = () => {
-    return detailThread.upVotesBy && detailThread.upVotesBy.includes(user.id);
-  };
+  const isUserUpvoted = () =>
+    detailThread.upVotesBy && detailThread.upVotesBy.includes(user.id);
 
-  const isUserDownvoted = () => {
-    return (
-      detailThread.downVotesBy && detailThread.downVotesBy.includes(user.id)
-    );
-  };
+  const isUserDownvoted = () =>
+    detailThread.downVotesBy && detailThread.downVotesBy.includes(user.id);
 
   const updateVotes = async (voteType) => {
     try {
-      let updatedThread = { ...detailThread };
+      const updatedThread = { ...detailThread };
 
-      if (voteType === "up") {
+      if (voteType === 'up') {
         updatedThread.upVotesBy = isUserUpvoted()
           ? detailThread.upVotesBy.filter((id) => id !== user.id)
           : [...detailThread.upVotesBy, user.id];
@@ -64,7 +60,7 @@ export default function VoteDetailThread() {
         }
 
         await upVoteThread(detailThread.id, 1);
-      } else if (voteType === "down") {
+      } else if (voteType === 'down') {
         updatedThread.downVotesBy = isUserDownvoted()
           ? detailThread.downVotesBy.filter((id) => id !== user.id)
           : [...detailThread.downVotesBy, user.id];
@@ -80,7 +76,7 @@ export default function VoteDetailThread() {
 
       dispatch(setDetailThread(updatedThread));
     } catch (error) {
-      console.error("Update Votes Error:", error);
+      console.error('Update Votes Error:', error);
     }
   };
 
@@ -94,9 +90,9 @@ export default function VoteDetailThread() {
         await upVoteThread(detailThread.id, 1);
       }
 
-      updateVotes("up");
+      updateVotes('up');
     } catch (error) {
-      console.error("Upvote Error:", error);
+      console.error('Upvote Error:', error);
     }
   };
 
@@ -110,9 +106,9 @@ export default function VoteDetailThread() {
         await downVoteThread(detailThread.id, -1);
       }
 
-      updateVotes("down");
+      updateVotes('down');
     } catch (error) {
-      console.error("Downvote Error:", error);
+      console.error('Downvote Error:', error);
     }
   };
 
@@ -121,7 +117,7 @@ export default function VoteDetailThread() {
       <button
         type="button"
         onClick={handleUpvote}
-        className={isUserUpvoted() ? "text-yellow-600" : ""}
+        className={isUserUpvoted() ? 'text-yellow-600' : ''}
       >
         <p>👍</p>
         <p>{detailThread.upVotesBy?.length}</p>
@@ -129,7 +125,7 @@ export default function VoteDetailThread() {
       <button
         type="button"
         onClick={handleDownvote}
-        className={isUserDownvoted() ? "text-yellow-600" : ""}
+        className={isUserDownvoted() ? 'text-yellow-600' : ''}
       >
         <p>👎</p>
         <p>{detailThread.downVotesBy?.length}</p>
