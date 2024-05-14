@@ -2,8 +2,6 @@ import config from '../config';
 
 const BASE_URL = config.base_url;
 
-console.log(BASE_URL);
-
 async function fetchWithToken(url, options = {}) {
   const getToken = localStorage.getItem('token');
 

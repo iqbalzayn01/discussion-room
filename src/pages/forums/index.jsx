@@ -111,8 +111,6 @@ export default function Forums() {
     }
   };
 
-  console.log(users);
-
   return (
     <>
       <Header />
