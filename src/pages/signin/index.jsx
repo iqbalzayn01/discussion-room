@@ -17,9 +17,11 @@ export default function SignIn() {
     email: '',
     password: '',
   });
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError('');
   };
 
   const handleSubmit = async (e) => {
@@ -36,6 +38,7 @@ export default function SignIn() {
       navigate('/forums');
     } catch (error) {
       console.error('Error login:', error);
+      setError('Invalid email or password');
       setIsLoading(false);
       dispatch(hideLoading());
     }
@@ -44,12 +47,13 @@ export default function SignIn() {
   if (getToken) return <Navigate to="/forums" replace />;
 
   return (
-    <section className="">
+    <section className="signIn">
       <div className="container-base w-full h-screen flex flex-col place-content-center gap-5 px-10 py-10">
         <Logo />
         <h3 className="text-2xl text-black dark:text-white text-center">
           Sign In
         </h3>
+        {error && <p className="text-red-500 text-center">{error}</p>}
         <FormSignIn
           valueEmail={formData.email}
           valuePassword={formData.password}
