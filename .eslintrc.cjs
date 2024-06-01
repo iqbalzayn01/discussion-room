@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
+  env: { browser: true, es2020: true, 'cypress/globals': true },
   extends: [
     'airbnb',
     'eslint:recommended',
@@ -11,7 +11,7 @@ module.exports = {
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
   settings: { react: { version: '18.2' } },
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh', 'cypress'],
   rules: {
     'linebreak-style': ['error', 'windows'],
     'react/jsx-no-target-blank': 'off',
