@@ -47,7 +47,7 @@ export default function SignIn() {
   if (getToken) return <Navigate to="/forums" replace />;
 
   return (
-    <section className="">
+    <section className="signin">
       <div className="container-base w-full h-screen flex flex-col place-content-center gap-5 px-10 py-10">
         <Logo />
         <h3 className="text-2xl text-black dark:text-white text-center">
