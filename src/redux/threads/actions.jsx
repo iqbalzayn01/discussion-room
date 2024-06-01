@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import { getAllThreadsERORTEST } from '../../utils/fetch';
+import { getAllThreadsErrorTestTwo } from '../../utils/fetch';
 
 export const setThreads = createAction('threads/setThreads');
 export const setDetailThread = createAction('threads/setDetailThread');
@@ -9,7 +9,7 @@ export const addComment = createAction('threads/addComment');
 
 export const fetchAllThreads = () => async (dispatch) => {
   try {
-    const res = await getAllThreadsERORTEST();
+    const res = await getAllThreadsErrorTestTwo();
     const dataThreads = res.data.threads;
     dispatch(setThreads(dataThreads));
   } catch (error) {
