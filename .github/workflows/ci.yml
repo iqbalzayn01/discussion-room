@@ -8,9 +8,6 @@ on:
 jobs:
   automation-test-job:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x] # Define the Node.js versions you want to test against
 
     steps:
       - name: Checkout repository
