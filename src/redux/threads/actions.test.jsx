@@ -8,7 +8,7 @@
  */
 
 import { describe, it, expect, vi } from 'vitest';
-import { fetchAllThreads, setThreads } from './actions';
+import { allThreads, setThreads } from './actions';
 import { getAllThreads } from '../../utils/fetch';
 
 vi.mock('../../utils/fetch', () => ({
@@ -28,7 +28,7 @@ describe('fetchAllThreads thunk', () => {
 
     const dispatch = vi.fn();
 
-    await fetchAllThreads()(dispatch);
+    await allThreads()(dispatch);
 
     expect(dispatch).toHaveBeenCalledWith(setThreads(mockThreads));
   });
@@ -41,7 +41,7 @@ describe('fetchAllThreads thunk', () => {
       .spyOn(console, 'error')
       .mockImplementation(() => {});
 
-    await fetchAllThreads()(dispatch);
+    await allThreads()(dispatch);
 
     expect(consoleError).toHaveBeenCalledWith(
       'Get All Threads Error:',

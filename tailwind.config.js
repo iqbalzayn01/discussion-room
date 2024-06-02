@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 /** @type {import('tailwindcss').Config} */
 
 export default {

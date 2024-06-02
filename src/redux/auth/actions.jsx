@@ -7,7 +7,7 @@ export const setUsers = createAction('auth/setUsers');
 export const setOneUser = createAction('auth/setOneUser');
 export const addUser = createAction('auth/addUser');
 
-export const fetchAllUsers = () => async (dispatch) => {
+export const allUsers = () => async (dispatch) => {
   try {
     const res = await getAllUsers();
     const dataAllUsers = res.data.users;

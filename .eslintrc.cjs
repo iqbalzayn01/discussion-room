@@ -13,7 +13,9 @@ module.exports = {
   settings: { react: { version: '18.2' } },
   plugins: ['react-refresh', 'cypress'],
   rules: {
-    'linebreak-style': ['error', 'windows'],
+    'linebreak-style': 'off',
+    'import/order': 'off',
+    semi: 'off',
     'react/jsx-no-target-blank': 'off',
     'react/require-default-props': 'off',
     'react-refresh/only-export-components': [

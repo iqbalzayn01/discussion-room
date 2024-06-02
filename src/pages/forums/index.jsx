@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
-import { fetchAllUsers } from '../../redux/auth/actions';
-import { setThreads, fetchAllThreads } from '../../redux/threads/actions';
-import { fetchLeaderboards } from '../../redux/leaderboards/actions';
+import { allUsers } from '../../redux/auth/actions';
+import { setThreads, allThreads } from '../../redux/threads/actions';
+import { leaderBoards } from '../../redux/leaderboards/actions';
 import Header from '../../components/Header';
 import GridColOne from './gridColOne';
 import GridColTwo from './gridColTwo';
@@ -21,11 +21,18 @@ export default function Forums() {
   useEffect(() => {
     dispatch(showLoading());
     setIsLoading(true);
-    dispatch(fetchAllThreads());
-    dispatch(fetchAllUsers());
-    dispatch(fetchLeaderboards());
-    setIsLoading(false);
-    dispatch(hideLoading());
+    dispatch(allThreads()).finally(() => {
+      setIsLoading(false);
+      dispatch(hideLoading());
+    });
+    dispatch(allUsers()).finally(() => {
+      setIsLoading(false);
+      dispatch(hideLoading());
+    });
+    dispatch(leaderBoards()).finally(() => {
+      setIsLoading(false);
+      dispatch(hideLoading());
+    });
   }, [dispatch]);
 
   const getAvatarById = (ownerId) => {
@@ -90,7 +97,7 @@ export default function Forums() {
         );
         setSelectedCategory(category);
       } else {
-        dispatch(fetchAllThreads());
+        dispatch(allThreads());
         setSelectedCategory('');
       }
 

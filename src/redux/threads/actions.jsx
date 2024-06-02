@@ -7,7 +7,7 @@ export const setDetailThread = createAction('threads/setDetailThread');
 export const createThreads = createAction('threads/createThreads');
 export const addComment = createAction('threads/addComment');
 
-export const fetchAllThreads = () => async (dispatch) => {
+export const allThreads = () => async (dispatch) => {
   try {
     const res = await getAllThreads();
     const dataThreads = res.data.threads;

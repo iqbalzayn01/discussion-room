@@ -3,7 +3,7 @@ import { getLeaderboards } from '../../utils/fetch';
 
 export const setLeaderboards = createAction('leaderboards/setLeaderboards');
 
-export const fetchLeaderboards = () => async (dispatch) => {
+export const leaderBoards = () => async (dispatch) => {
   try {
     const res = await getLeaderboards();
     const dataLeaderboards = res.data.leaderboards;

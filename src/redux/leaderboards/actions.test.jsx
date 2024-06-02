@@ -8,7 +8,7 @@
  */
 
 import { describe, it, expect, vi } from 'vitest';
-import { fetchLeaderboards, setLeaderboards } from './actions';
+import { leaderBoards, setLeaderboards } from './actions';
 import { getLeaderboards } from '../../utils/fetch';
 
 vi.mock('../../utils/fetch', () => ({
@@ -30,7 +30,7 @@ describe('fetchLeaderboards thunk', () => {
     const dispatch = vi.fn();
 
     // Call the thunk
-    await fetchLeaderboards()(dispatch);
+    await leaderBoards()(dispatch);
 
     // Verify that setLeaderboards was dispatched with the correct data
     expect(dispatch).toHaveBeenCalledWith(setLeaderboards(mockLeaderboards));
@@ -46,7 +46,7 @@ describe('fetchLeaderboards thunk', () => {
       .mockImplementation(() => {});
 
     // Call the thunk
-    await fetchLeaderboards()(dispatch);
+    await leaderBoards()(dispatch);
 
     // Verify that the error was logged
     expect(consoleError).toHaveBeenCalledWith(

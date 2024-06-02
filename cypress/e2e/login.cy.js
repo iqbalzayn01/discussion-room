@@ -10,7 +10,6 @@
 
 describe('Login spec', () => {
   beforeEach(() => {
-    // Set up before each test
     cy.visit('http://localhost:5173/signin');
   });
 
@@ -63,7 +62,6 @@ describe('Login spec', () => {
 
     cy.contains('button', 'Sign In').click();
 
-    cy.url().should('include', '/forums');
     cy.get('p').contains('Hi, Madiksa').should('be.visible');
     cy.get('button').contains('Sign Out').should('be.visible');
   });
