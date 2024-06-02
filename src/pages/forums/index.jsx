@@ -21,18 +21,11 @@ export default function Forums() {
   useEffect(() => {
     dispatch(showLoading());
     setIsLoading(true);
-    dispatch(fetchAllThreads())
-      .then(() => dispatch(fetchAllUsers()))
-      .then(() => dispatch(fetchLeaderboards()))
-      .then(() => {
-        setIsLoading(false);
-        dispatch(hideLoading());
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-        setIsLoading(false);
-        dispatch(hideLoading());
-      });
+    dispatch(fetchAllThreads());
+    dispatch(fetchAllUsers());
+    dispatch(fetchLeaderboards());
+    setIsLoading(false);
+    dispatch(hideLoading());
   }, [dispatch]);
 
   const getAvatarById = (ownerId) => {

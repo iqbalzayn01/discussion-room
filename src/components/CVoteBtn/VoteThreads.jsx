@@ -4,12 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {
-  getUserLogged,
   upVoteThread,
   downVoteThread,
   neutralThreadVote,
 } from '../../utils/fetch';
-import { setOneUser } from '../../redux/auth/actions';
+import { fetchUser } from '../../redux/auth/actions';
 import { setThreads } from '../../redux/threads/actions';
 
 export default function VoteThreads({ thread, handleVoteUpdate }) {
@@ -19,19 +18,7 @@ export default function VoteThreads({ thread, handleVoteUpdate }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!authUser) return;
-        const resUserLogged = await getUserLogged();
-        const dataUser = resUserLogged.data.user;
-
-        dispatch(setOneUser(dataUser));
-      } catch (error) {
-        console.error('Get One User Error:', error);
-      }
-    };
-
-    fetchData();
+    dispatch(fetchUser());
   }, [authUser, dispatch]);
 
   const isUserUpvoted = (userId) =>

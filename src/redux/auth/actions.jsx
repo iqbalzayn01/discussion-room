@@ -23,6 +23,6 @@ export const fetchUser = () => async (dispatch) => {
     const dataUser = res.data.user;
     dispatch(setOneUser(dataUser));
   } catch (error) {
-    console.error('Get One User Error:', error);
+    console.error('Get User Logged Error:', error);
   }
 };

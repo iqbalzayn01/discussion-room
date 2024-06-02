@@ -17,9 +17,11 @@ export default function SignIn() {
     email: '',
     password: '',
   });
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError('');
   };
 
   const handleSubmit = async (e) => {
@@ -36,6 +38,7 @@ export default function SignIn() {
       navigate('/forums');
     } catch (error) {
       console.error('Error login:', error);
+      setError('email or password is wrong');
       setIsLoading(false);
       dispatch(hideLoading());
     }
@@ -50,6 +53,7 @@ export default function SignIn() {
         <h3 className="text-2xl text-black dark:text-white text-center">
           Sign In
         </h3>
+        {error && <p className="text-red-500 text-center">{error}</p>}
         <FormSignIn
           valueEmail={formData.email}
           valuePassword={formData.password}

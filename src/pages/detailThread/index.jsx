@@ -3,8 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import parser from 'html-react-parser';
 
-import { getThread } from '../../utils/fetch';
-import { setDetailThread } from '../../redux/threads/actions';
+import { fetchGetThread } from '../../redux/threads/actions';
 import Header from '../../components/Header';
 import VoteDetailThread from '../../components/CVoteBtn/VoteDetailThread';
 import CommentInput from './commentInput';
@@ -17,18 +16,7 @@ export default function DetailThread() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await getThread(id);
-        const dataThread = res.data.detailThread;
-
-        dispatch(setDetailThread(dataThread));
-      } catch (error) {
-        console.error('Get One Thread Error:', error);
-      }
-    };
-
-    fetchData();
+    dispatch(fetchGetThread(id));
   }, [id, dispatch]);
 
   return (
