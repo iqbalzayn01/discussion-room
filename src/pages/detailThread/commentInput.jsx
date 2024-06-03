@@ -2,8 +2,7 @@ import { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { createComment } from '../../utils/fetch';
-import { addComment } from '../../redux/threads/actions';
+import { createComments } from '../../redux/threads/actions';
 import CButton from '../../components/CButton';
 
 export default function CommentInput({ className, detailThread }) {
@@ -19,34 +18,15 @@ export default function CommentInput({ className, detailThread }) {
   const handleComments = async (e) => {
     e.preventDefault();
 
-    try {
-      const newCommentContent = inputValue.trim();
-
-      if (!newCommentContent || /^\s*$/.test(newCommentContent)) {
-        alert('Comment cannot be empty or contain only spaces.');
-        return;
-      }
-
-      const res = await createComment(detailThread.id, newCommentContent);
-
-      if (res.error) {
-        throw new Error('Failed to create comment');
-      }
-
-      const { comment } = res.data;
-
-      dispatch(
-        addComment({
-          ...comment,
-          content: newCommentContent,
-        })
-      );
-
-      newCommentsRef.current.innerText = '';
-      setInputValue('');
-    } catch (error) {
-      console.error('Comment Creation Error:', error.message);
+    const newCommentContent = inputValue.trim();
+    if (!newCommentContent || /^\s*$/.test(newCommentContent)) {
+      alert('Comment cannot be empty or contain only spaces.');
+      return;
     }
+
+    dispatch(createComments(detailThread.id, newCommentContent));
+    newCommentsRef.current.innerText = '';
+    setInputValue('');
   };
 
   return (

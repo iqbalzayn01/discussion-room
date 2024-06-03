@@ -18,9 +18,9 @@ const router = createBrowserRouter(
       <Route path="/" element={<Home />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signin" element={<SignIn />} />
-      <Route path="/forums" element={<Forums />} />
       <Route element={<RequireAuth />}>
         <Route path="/newthreads" element={<NewThreads />} />
+        <Route path="/forums" element={<Forums />} />
         <Route path="/detail-thread/:id" element={<DetailThread />} />
       </Route>
     </>

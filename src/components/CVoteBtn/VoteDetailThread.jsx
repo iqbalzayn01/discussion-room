@@ -1,82 +1,91 @@
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { userLogged } from '../../redux/auth/actions';
 import {
-  upVoteThread,
-  downVoteThread,
-  neutralThreadVote,
-} from '../../utils/fetch';
-import { fetchUser } from '../../redux/auth/actions';
-import { setDetailThread, fetchGetThread } from '../../redux/threads/actions';
+  upVoteThreadAction,
+  downVoteThreadAction,
+  neutralThreadVoteAction,
+  setDetailThread,
+} from '../../redux/threads/actions';
 
 export default function VoteDetailThread() {
-  const { id } = useParams();
   const detailThread = useSelector((state) => state.threads.detailThread);
   const user = useSelector((state) => state.auth.user);
+  const authUser = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
+  const [voting, setVoting] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchGetThread(id));
-    dispatch(fetchUser());
-  }, [id, dispatch]);
+    dispatch(userLogged());
+  }, [authUser, dispatch]);
 
-  const isUserUpvoted = () =>
-    detailThread.upVotesBy && detailThread.upVotesBy.includes(user.id);
+  const isUserUpvoted = () => detailThread.upVotesBy?.includes(user.id);
+  const isUserDownvoted = () => detailThread.downVotesBy?.includes(user.id);
 
-  const isUserDownvoted = () =>
-    detailThread.downVotesBy && detailThread.downVotesBy.includes(user.id);
+  const handleVote = async (voteType) => {
+    if (!authUser || voting) return;
 
-  const updateVotes = async (voteType) => {
     try {
-      const updatedThread = { ...detailThread };
-
+      setVoting(true);
+      let updatedThread;
       if (voteType === 'up') {
         if (isUserUpvoted()) {
-          updatedThread.upVotesBy = detailThread.upVotesBy.filter(
-            (id) => id !== user.id
-          );
-          await neutralThreadVote(detailThread.id);
+          await dispatch(neutralThreadVoteAction(detailThread.id));
+          updatedThread = {
+            ...detailThread,
+            upVotesBy: detailThread.upVotesBy.filter((id) => id !== user.id),
+          };
         } else {
-          updatedThread.upVotesBy = [...detailThread.upVotesBy, user.id];
+          await dispatch(upVoteThreadAction(detailThread.id));
+          updatedThread = {
+            ...detailThread,
+            upVotesBy: [...detailThread.upVotesBy, user.id],
+          };
           if (isUserDownvoted()) {
             updatedThread.downVotesBy = detailThread.downVotesBy.filter(
               (id) => id !== user.id
             );
           }
-          await upVoteThread(detailThread.id, 1);
         }
       } else if (voteType === 'down') {
         if (isUserDownvoted()) {
-          updatedThread.downVotesBy = detailThread.downVotesBy.filter(
-            (id) => id !== user.id
-          );
-          await neutralThreadVote(detailThread.id);
+          await dispatch(neutralThreadVoteAction(detailThread.id));
+          updatedThread = {
+            ...detailThread,
+            downVotesBy: detailThread.downVotesBy.filter(
+              (id) => id !== user.id
+            ),
+          };
         } else {
-          updatedThread.downVotesBy = [...detailThread.downVotesBy, user.id];
+          await dispatch(downVoteThreadAction(detailThread.id));
+          updatedThread = {
+            ...detailThread,
+            downVotesBy: [...detailThread.downVotesBy, user.id],
+          };
           if (isUserUpvoted()) {
             updatedThread.upVotesBy = detailThread.upVotesBy.filter(
               (id) => id !== user.id
             );
           }
-          await downVoteThread(detailThread.id, -1);
         }
       }
-
       dispatch(setDetailThread(updatedThread));
     } catch (error) {
-      console.error('Update Votes Error:', error);
+      console.error('Vote Error:', error);
+    } finally {
+      setVoting(false);
     }
   };
 
   const handleUpvote = (e) => {
     e.preventDefault();
-    updateVotes('up');
+    handleVote('up');
   };
 
   const handleDownvote = (e) => {
     e.preventDefault();
-    updateVotes('down');
+    handleVote('down');
   };
 
   return (

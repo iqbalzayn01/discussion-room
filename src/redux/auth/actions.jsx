@@ -17,7 +17,7 @@ export const allUsers = () => async (dispatch) => {
   }
 };
 
-export const fetchUser = () => async (dispatch) => {
+export const userLogged = () => async (dispatch) => {
   try {
     const res = await getUserLogged();
     const dataUser = res.data.user;

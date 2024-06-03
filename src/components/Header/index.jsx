@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { fetchUser, clearToken } from '../../redux/auth/actions';
+import { userLogged, clearToken } from '../../redux/auth/actions';
 import Navbar from '../Navbar';
 import CButton from '../CButton';
 
@@ -14,17 +14,9 @@ export default function Header() {
   const location = useLocation();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (getToken) {
-          dispatch(fetchUser());
-        }
-      } catch (error) {
-        console.error('Get One User Error:', error);
-      }
-    };
-
-    fetchData();
+    if (getToken) {
+      dispatch(userLogged());
+    }
   }, [getToken, dispatch]);
 
   const shouldDisplayNavbar = () => location.pathname === '/';

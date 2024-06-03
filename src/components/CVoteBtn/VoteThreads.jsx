@@ -3,22 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { userLogged } from '../../redux/auth/actions';
 import {
-  upVoteThread,
-  downVoteThread,
-  neutralThreadVote,
-} from '../../utils/fetch';
-import { fetchUser } from '../../redux/auth/actions';
-import { setThreads } from '../../redux/threads/actions';
+  upVoteThreadAction,
+  downVoteThreadAction,
+  neutralThreadVoteAction,
+} from '../../redux/threads/actions';
 
-export default function VoteThreads({ thread, handleVoteUpdate }) {
+export default function VoteThreads({ thread }) {
   const user = useSelector((state) => state.auth.user);
   const authUser = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchUser());
+    dispatch(userLogged());
   }, [authUser, dispatch]);
 
   const isUserUpvoted = (userId) =>
@@ -27,70 +26,38 @@ export default function VoteThreads({ thread, handleVoteUpdate }) {
   const isUserDownvoted = (userId) =>
     thread.downVotesBy && thread.downVotesBy.includes(userId);
 
-  const updateVotes = (userId, voteType) => {
-    const updatedThread = { ...thread };
-
-    if (voteType === 'up') {
-      updatedThread.upVotesBy = isUserUpvoted(userId)
-        ? thread.upVotesBy.filter((id) => id !== userId)
-        : [...thread.upVotesBy, userId];
-
-      if (isUserDownvoted(userId)) {
-        updatedThread.downVotesBy = thread.downVotesBy.filter(
-          (id) => id !== userId
-        );
-      }
-    } else if (voteType === 'down') {
-      updatedThread.downVotesBy = isUserDownvoted(userId)
-        ? thread.downVotesBy.filter((id) => id !== userId)
-        : [...thread.downVotesBy, userId];
-
-      if (isUserUpvoted(userId)) {
-        updatedThread.upVotesBy = thread.upVotesBy.filter(
-          (id) => id !== userId
-        );
-      }
+  const handleVote = async (voteType) => {
+    if (!authUser) {
+      return navigate('/signin');
     }
 
-    return updatedThread;
-  };
-
-  const handleUpvote = async (e) => {
-    e.preventDefault();
-
     try {
-      if (!authUser) return navigate('/signin');
-      if (isUserUpvoted(user?.id)) {
-        await neutralThreadVote(thread.id);
-      } else {
-        await upVoteThread(thread.id, 1);
+      if (voteType === 'up') {
+        if (isUserUpvoted(user.id)) {
+          await dispatch(neutralThreadVoteAction(thread.id));
+        } else {
+          await dispatch(upVoteThreadAction(thread.id));
+        }
+      } else if (voteType === 'down') {
+        if (isUserDownvoted(user.id)) {
+          await dispatch(neutralThreadVoteAction(thread.id));
+        } else {
+          await dispatch(downVoteThreadAction(thread.id));
+        }
       }
-
-      const updatedThread = updateVotes(user?.id, 'up');
-      const updatedThreads = handleVoteUpdate(updatedThread);
-      dispatch(setThreads(updatedThreads));
     } catch (error) {
-      console.error('Upvote Error:', error);
+      console.error('Vote Error:', error);
     }
   };
 
-  const handleDownvote = async (e) => {
+  const handleUpvote = (e) => {
     e.preventDefault();
+    handleVote('up');
+  };
 
-    try {
-      if (!authUser) return navigate('/signin');
-      if (isUserDownvoted(user?.id)) {
-        await neutralThreadVote(thread.id);
-      } else {
-        await downVoteThread(thread.id, -1);
-      }
-
-      const updatedThread = updateVotes(user?.id, 'down');
-      const updatedThreads = handleVoteUpdate(updatedThread);
-      dispatch(setThreads(updatedThreads));
-    } catch (error) {
-      console.error('Downvote Error:', error);
-    }
+  const handleDownvote = (e) => {
+    e.preventDefault();
+    handleVote('down');
   };
 
   return (
@@ -119,5 +86,4 @@ VoteThreads.propTypes = {
     upVotesBy: PropTypes.array,
     downVotesBy: PropTypes.array,
   }),
-  handleVoteUpdate: PropTypes.func,
 };
