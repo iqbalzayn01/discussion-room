@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import {
   setThreads,
   setDetailThread,
-  createThreads,
+  createThreadsSuccess,
   addComment,
 } from './actions';
 
@@ -19,7 +19,7 @@ const threadsReducer = createReducer(initialState, (builder) => {
     .addCase(setDetailThread, (state, action) => {
       state.detailThread = action.payload;
     })
-    .addCase(createThreads, (state, action) => {
+    .addCase(createThreadsSuccess, (state, action) => {
       state.threads.push(action.payload);
     })
     .addCase(addComment, (state, action) => {

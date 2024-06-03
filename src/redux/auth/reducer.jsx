@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setToken, clearToken, setUsers, setOneUser, addUser } from './actions';
+import { addUser, setToken, clearToken, setUsers, setOneUser } from './actions';
 
 const initialState = {
   users: [],
@@ -9,6 +9,9 @@ const initialState = {
 
 const authReducer = createReducer(initialState, (builder) => {
   builder
+    .addCase(addUser, (state, action) => {
+      state.users.push(action.payload);
+    })
     .addCase(setToken, (state, action) => {
       state.token = action.payload;
       localStorage.setItem('token', action.payload);
@@ -22,9 +25,6 @@ const authReducer = createReducer(initialState, (builder) => {
     })
     .addCase(setOneUser, (state, action) => {
       state.user = action.payload;
-    })
-    .addCase(addUser, (state, action) => {
-      state.users.push(action.payload);
     });
 });
 

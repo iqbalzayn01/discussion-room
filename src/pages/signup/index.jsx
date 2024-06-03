@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
-import { addUser } from '../../redux/auth/actions';
-import { register } from '../../utils/fetch';
+import { signUp } from '../../redux/auth/actions';
 import FormSignUp from './formSignUp';
 import Logo from '../../components/Logo';
 
@@ -20,6 +19,7 @@ export default function SignUp() {
     password: '',
     confirmPassword: '',
   });
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,27 +28,22 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     dispatch(showLoading());
     setIsLoading(true);
+
     if (formData.password !== formData.confirmPassword) {
       setPasswordMatchError(true);
       return;
     }
 
     try {
-      const res = await register({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
-      const dataUser = res.data;
-      dispatch(addUser(dataUser));
+      await dispatch(signUp(formData));
       setIsLoading(false);
       dispatch(hideLoading());
       navigate('/signin');
     } catch (error) {
-      console.error('SIGNUP_ERROR:', error);
+      console.error('Sign Up Error:', error);
+      setError('Sign up error');
       setIsLoading(false);
       dispatch(hideLoading());
     }
@@ -63,6 +58,7 @@ export default function SignUp() {
         <h3 className="text-2xl text-black dark:text-white text-center">
           Sign Up
         </h3>
+        {error && <p className="text-red-500 text-center">{error}</p>}
         {passwordMatchError && (
           <p className="bg-red-400 text-center text-white px-5 py-2 rounded-lg">
             Passwords do not match. Please try again.

@@ -3,6 +3,7 @@
 import { createAction } from '@reduxjs/toolkit';
 
 import {
+  createNewThreads,
   getAllThreads,
   getThread,
   createComment,
@@ -16,8 +17,20 @@ import {
 
 export const setThreads = createAction('threads/setThreads');
 export const setDetailThread = createAction('threads/setDetailThread');
-export const createThreads = createAction('threads/createThreads');
+export const createThreadsSuccess = createAction(
+  'threads/createThreadsSuccess'
+);
 export const addComment = createAction('threads/addComment');
+
+export const createThreads = (formData) => async (dispatch) => {
+  try {
+    const res = await createNewThreads(formData);
+    const dataNewThreads = res.data.thread;
+    dispatch(createThreadsSuccess(dataNewThreads));
+  } catch (error) {
+    console.error('Create New Threads Error:', error);
+  }
+};
 
 export const allThreads = () => async (dispatch) => {
   try {

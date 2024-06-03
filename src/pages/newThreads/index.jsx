@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
-import { createNewThreads } from '../../utils/fetch';
 import { createThreads } from '../../redux/threads/actions';
 import CButton from '../../components/CButton';
 
@@ -14,6 +13,7 @@ export default function NewThreads() {
     category: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const newThreadsBodyRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,30 +30,14 @@ export default function NewThreads() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     dispatch(showLoading());
-    setIsLoading(true);
     try {
-      const { title, body, category } = formDataState;
-
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('body', body);
-      formData.append('category', category);
-
-      const res = await createNewThreads({
-        title: formData.get('title'),
-        body: formData.get('body'),
-        category: formData.get('category'),
-      });
-      const dataThreads = res.data.thread;
-
-      dispatch(createThreads(dataThreads));
-      setIsLoading(false);
-      dispatch(hideLoading());
+      await dispatch(createThreads(formDataState));
       navigate('/forums');
     } catch (error) {
-      console.error('FORM_NEW_THREADS_ERROR:', error);
+      console.error('Create New Threads Error:', error);
+      setError('Create new threads error');
+    } finally {
       setIsLoading(false);
       dispatch(hideLoading());
     }
@@ -68,6 +52,7 @@ export default function NewThreads() {
         <h3 className="text-3xl font-medium text-black dark:text-white text-center mb-10">
           New Threads
         </h3>
+        {error && <p className="text-red-500 text-center">{error}</p>}
         <input
           id="title"
           type="text"

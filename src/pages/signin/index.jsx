@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
-import { setToken } from '../../redux/auth/actions';
-import { login } from '../../utils/fetch';
+import { signIn } from '../../redux/auth/actions';
 import FormSignIn from './formSignIn';
 import Logo from '../../components/Logo';
 
@@ -26,13 +25,10 @@ export default function SignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     dispatch(showLoading());
     setIsLoading(true);
     try {
-      const res = await login(formData);
-      const { token } = res.data;
-      dispatch(setToken(token));
+      await dispatch(signIn(formData));
       setIsLoading(false);
       dispatch(hideLoading());
       navigate('/forums');
